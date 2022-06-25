@@ -1,0 +1,15 @@
+Step 1: Preparation
+The time use to save different format of data
+[1] "The number of high variable genes used:"
+[1] 2000
+[1] "The dimension of the selected matrix is:"
+[1]  2000 24787
+[1] "Save the normalized data of high variables"
+[1] "time used:"
+Time difference of 1.032186 mins
+[1] "Save the scaled data of high variables"
+[1] "time used:"
+Time difference of 1.170764 mins
+[1] "Save the 10x format of normalized data of high variables"
+[1] "time used:"
+Time difference of 25.01054 secs
