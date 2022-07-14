@@ -11,7 +11,9 @@ work.dir = args[1]
 data.dir = args[2]
 n.variable = args[3]
 n.variable = as.integer(n.variable)
-if.cluster = args[4]
+if.known.marker = args[4]
+if.known.marker = as.logical(if.known.marker)
+if.cluster = args[5]
 if.cluster = as.logical(if.cluster)
 
 print("The work directory is:")
@@ -22,6 +24,9 @@ print("The number of high variable features to choose:")
 print(n.variable)
 print("Whether do cluster?")
 print(if.cluster)
+print("Whether test if the known high variable genes are all included into the high variable genes")
+print(if.known.marker)
+
 #print(args[5])
 if(length(args) < 5){
 	n.PCA = 10 }else{
@@ -61,6 +66,7 @@ plot_distribution <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "p
 ggsave(file.path(Wdata.dir, "distribution_of_features_counts.png"), plot_distribution, width = 15, height = 10)
 pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
 
+
 dim(Idents(pbmc))
 write.table(Idents(pbmc), file = file.path(Wdata.dir, "cluster_labels.csv"), sep="\t", col.names=FALSE)
 
@@ -94,6 +100,41 @@ pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = n.varia
 mat_keep_rows <- head(VariableFeatures(object = pbmc),n.variable)
 print("The number of high variable genes used:")
 print(length(mat_keep_rows))
+
+# Here to test whether the known genes are included into the high_variable genes
+
+
+if(if.known.marker){
+        include <- TRUE
+        known.marker.dir <- file.path(data.dir, "Known_marker.csv")
+        known.marker <- read.csv(
+        file = known.marker.dir,
+        as.is = TRUE,
+        header = FALSE
+        )
+
+	print(known.marker)
+        for (i in 1:nrow(known.marker)){
+            genes <-strsplit(known.marker[i,2], ", ")[[1]]
+	    print(genes)
+            all_test <- genes %in% mat_keep_rows
+            print(all_test)
+	    print(genes %in% all.genes)
+            if (FALSE %in% all_test){
+                include <- FALSE
+                break()
+            }
+        }
+
+        # If not, need to ajusted the number of high_variable genes
+        if(!include){
+                stop("The known markers are not totally included into the high_variable genes, need to adjust the number of high_variable genes")
+        } else {
+                print("The known markers are well included into the high_variable genes")
+        }
+    }
+
+
 mat_subset <- mat[rownames(mat) %in% mat_keep_rows, ]
 mat_scale_subset <- mat_scale[rownames(mat_scale) %in% mat_keep_rows, ]
 print("The dimension of the selected matrix is:")

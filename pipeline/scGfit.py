@@ -75,17 +75,37 @@ print(labels.dtype)
 
 # find markers
 start = time.time()
-markers= get_markers(data, labels, n_marker, method=centers, redundancy=0.25)
+markers= get_markers(data, labels, n_marker*len(Y_t), method=centers, redundancy=0.25)
 end = time.time()
 print("Excuting time:%s second"%(end-start))
 print(genes[markers])
 
-df_markers = pd.DataFrame (genes[markers], columns = ['markers'])
+# to get the marker gene for each cluster, the average expression of each selected genes for each cluster is going to be calculated
+# then the top ones is going to be assignend to the cluster
+# subset the dataset with the selected markers
+data= data[:,markers]
+# res save the mean expression of each gene in each cluster. dimension clusters * seleceted genes
+res = pd.DataFrame(columns=genes[markers], index=Y_t)
+for clust in Y_t:
+    res.loc[clust] = data[Y_true[Y_true==clust]].mean(0)
+# marker_per group save the markers of each group. dimension: clusters * marker genes
+marker_per_group = pd.DataFrame( index= Y_t, columns=range(n_marker))
+# unique_markers save all unique markers of all clusters
+unique_markers = pd.Index([])
+for clust in Y_t:
+    markers = res.loc[clust].sort_values(ascending = False)[:n_marker,].index
+    marker_per_group.loc[clust] = markers
+    unique_markers = unique_markers.append(markers)
+
+unique_markers = unique_markers.unique()
+df_markers = pd.DataFrame (unique_markers, columns = ['markers'])
 
 # save the result
 select_dir = work_dir + "/marker"
 if not os.path.isdir(select_dir):
     os.mkdir(select_dir)
 result_dir = select_dir + "/marker_genes.txt"
+result_per_group_dir = select_dir + "/marker_gene_per_group.txt"
 df_markers.to_csv(result_dir, header = True, sep='\t')
+marker_per_group.to_csv(result_dir, header = True, sep='\t')
 
