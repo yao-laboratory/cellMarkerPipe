@@ -40,39 +40,47 @@ Y_t, indices = np.unique(clusters_np, return_inverse=True)
 
 select_dir = work_dir + "/marker"
 # loop each cluster to read the result of COMET
-marker_all = np.array([],dtype=object)
-df_marker_group = pd.DataFrame(columns = ['Cluster', 'Markers'])
+unique_markers = np.array([],dtype=object)
+marker_per_group = pd.DataFrame(index=Y_t, columns=["Marker"])
+marker_per_group.index.name = "Cluster"
 for group in Y_t:
 
     if (if_pair):
         marker_group_file = output_dir + "/cluster_" + str(group) + "_pair_final_ranking.csv"
         marker_file = pd.read_csv(marker_group_file, header=0)
-        markers1 = marker_file.iloc[0:n_marker,1].str.split(pat="_",expand=True)[0].unique()
-        markers2 = marker_file.iloc[0:n_marker,2].str.split(pat="_",expand=True)[0].unique()
-        print(markers1)
-        print(markers2)
-        print(type(markers1))
-        print(type(markers2))
-        print(markers1.shape)
-        print(markers2.shape)
-        markers = np.concatenate((markers1, markers2),axis=0)
-#        markers = np.concatenate(markers1, markers2)
-        marker_all = np.unique(np.concatenate((marker_all, markers)))
-       
-        df_marker_group = df_marker_group.append({'Cluster':group, 'Markers':markers}, ignore_index=True)
+        markers = []
+        for i in marker_file.index:
+            if(len(markers) >= n_marker):
+                break
+            marker1 = marker_file["gene_1"][i].split("_")[0]
+            if (marker1 not in markers):
+                markers+= [marker1]
+            if(len(markers) >= n_marker):
+                break
+            marker2 = marker_file["gene_2"][i].split("_")[0]
+            if (marker2 not in markers):
+                markers+= [marker2]
+        marker_per_group.loc[group] = ", ".join(markers)
+        unique_markers = np.unique(np.concatenate((unique_markers, markers)))
 
 
     else:
         marker_group_file = output_dir + "/cluster_" + str(group) + "_singleton_all_ranked.csv"
         marker_file = pd.read_csv(marker_group_file, header=0)
-        markers = marker_file.iloc[0:n_marker,0].str.split(pat="_",expand=True)[0].unique()
-        marker_all = np.unique(np.concatenate((marker_all, markers)))
+        markers = marker_file.iloc[:,0].str.split(pat="_",expand=True)[0].unique()[0:n_markers]
+        unique_markers = np.unique(np.concatenate((unique_markers, markers)))
+        marker_per_group.loc[group] = ", ".join(markers)
 
-        df_marker_group = df_marker_group.append({'Cluster':group, 'Markers':markers})
 
 # save the result
-df_markers = pd.DataFrame (marker_all, columns = ['markers'])
+df_markers = pd.DataFrame (unique_markers, columns = ['markers'])
+#result_dir = select_dir + "/marker_genes.txt"
+#df_markers.to_csv(result_dir, header = True, sep='\t')
+#result_dir = select_dir + "/marker_gene_per_group.csv"
+#df_marker_group.to_csv(result_dir, header = True, sep='\t')
+
 result_dir = select_dir + "/marker_genes.txt"
+result_per_group_dir = select_dir + "/marker_gene_per_group.csv"
+print(result_per_group_dir)
 df_markers.to_csv(result_dir, header = True, sep='\t')
-result_dir = select_dir + "/marker_gene_per_group.csv"
-df_marker_group.to_csv(result_dir, header = True, sep='\t')
+marker_per_group.to_csv(result_per_group_dir, header = True, sep=',')

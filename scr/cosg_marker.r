@@ -7,13 +7,16 @@ args <- commandArgs(trailingOnly = TRUE)
 ## start a project dir
 work.dir = args[1]
 n.marker = args[2]
+mu = args[3]
 
 print("The work directory is:")
 print(work.dir)
 print("The number of marker that will be find out for each group:")
 n.marker <- as.integer(n.marker)
 print(n.marker)
-
+print("The penalty parameter mu is:")
+mu <- as.numeric(mu)
+print(mu)
 matrix.dir <- file.path(work.dir, "data/scale_data_high_variable.csv")
 cluster.dir <- file.path(work.dir, "data/cluster_labels.csv")
 
@@ -49,7 +52,7 @@ marker_cosg<-cosg(
   groups='all',
   assay='RNA',
   slot='data',
-  mu=1,
+  mu=mu,
   n_genes_user=n.marker)
 
 end_time <- Sys.time()
