@@ -15,8 +15,7 @@ setup(
     long_description=read('README.md'),
     install_requires=[
         'pandas',
-        'numpy',
-        'subprocess'
+        'numpy'
         ]
 )
 

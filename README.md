@@ -11,8 +11,9 @@ CellMarkerPip is a pipeline designed to include recent popular tools of identify
 
 ### Installation
 
-Install the following dependencies before installing the package:
+firstly using anaconda to set up envrionment. Then install the package with pip install.
+The installing files are provided under folder envrionment. Some methods have dependence conflict. You have to use the right one to set up environment
 
 ### Tutorial
 
-
+The test file are provided under folder notebook. The test data are under folder data while the corresponding output are under folder ouput

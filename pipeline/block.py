@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
-import time
-import pandas as pd
+#import pipeline
+#import pipeline.os as os
+#import pipeline.time as time
+#import pipeline.pd as pd
+from pipeline import *
+#print(os)
 
 # function to check the status of the job
 def stats(dep=""):
@@ -15,7 +18,7 @@ def stats(dep=""):
 
 # function to submitting jobs on hcc
 def sbatch(
-    job_name, command, time=48, mem=60, tasks=1, partition="yaolab,batch", environment="gene_select", dep=""
+    job_name, command, work_dir= "", time=48, mem=60, tasks=1, partition="yaolab,batch", environment="gene_select", dep=""
 ):
     # jobs depend on the results of former jobs
     print("dep is:")
@@ -92,7 +95,7 @@ def preprocess(data_dir, work_dir, nvariable=2000, known_marker = False, keep_ma
         + str(nPCA)
         + " > stat_preprocess"
     )
-    job_id = sbatch(job_name="preprocess", command=command)
+    job_id = sbatch(job_name="preprocess", command=command, work_dir=work_dir)
     print(job_id)
 
     return job_id
@@ -131,14 +134,14 @@ def evaluation(work_dir, nPCA=10, truncat_n = 0, method="", dep=""):
     code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"    
     command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + method + " " + str(nPCA) + " " + str(truncat_n)
     # command = "python " + code_dir + "test.py"
-    job_id_cluster = sbatch(job_name="re-cluster", command=command, dep=dep)
+    job_id_cluster = sbatch(job_name="re-cluster", command=command, work_dir=work_dir, dep=dep)
 
     print(job_id_cluster)
 
     # compare y_predict with y_true
     command = "python " + code_dir + "evaluation.py " + work_dir + " > stat_evaluation"
 
-    job_id = sbatch(job_name="evaluation", command=command, dep=str(job_id_cluster))
+    job_id = sbatch(job_name="evaluation", command=command, work_dir=work_dir, dep=str(job_id_cluster))
     print(job_id)
     return
 
@@ -158,7 +161,7 @@ def diff_express(work_dir, data_dir="", n_marker=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-    job_id = sbatch(job_name="selection", command=command, dep=dep)
+    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep)
 
     return job_id
 
@@ -178,7 +181,7 @@ def SC3_diff(work_dir,data_dir="", n_marker=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-    job_id = sbatch(job_name="selection", command=command, environment="yingluR4.1", dep=dep)
+    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir,environment="yingluR4.1", dep=dep)
 
     return job_id
 
@@ -209,7 +212,7 @@ def scGenefit(
         + str(epsilon)
         + " > stat_selection"
     )
-    job_id = sbatch(job_name="selection", command=command, dep=dep)
+    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep)
 
     return  job_id
 
@@ -286,7 +289,7 @@ def Comet(
                 + others
             )
     print(command)
-    job_id_comet = sbatch(job_name="selection",time=24, command=command, environment="py36", dep=dep)
+    job_id_comet = sbatch(job_name="selection",time=24, command=command, work_dir=work_dir, environment="py36", dep=dep)
     # get top # of markers
      # compare y_predict with y_true
     command = ("python " 
@@ -299,7 +302,7 @@ def Comet(
                + str(if_pair)
                + " > stat_comet_result")
 
-    job_id = sbatch(job_name="comet_result", time=8, command=command, environment="py36", dep=str(job_id_comet))
+    job_id = sbatch(job_name="comet_result", time=8, command=command, work_dir=work_dir, environment="py36", dep=str(job_id_comet))
     
     return job_id
 
@@ -324,10 +327,48 @@ def SCmarker(work_dir, data_dir="", n_marker=10, k=100, n=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-    job_id = sbatch(job_name="selection", command=command, dep=dep)
+    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep)
 
     return job_id
 
+
+# COSG method
+def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1, dep=""):
+    # n is the number of marker for each cluster
+    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
+
+    command = (
+        "Rscript "
+        + code_dir
+        + "cosg_marker.r "
+        + work_dir
+        + " "
+        + str(n_marker)
+        + " "
+        + str(mu)
+        + " > stat_selection"
+    )
+    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep)
+
+    return job_id
+
+# FEAST method
+def FEASTmarker(work_dir,data_dir="", n_marker=10, dep=""):
+    # n is the number of marker for each cluster
+    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
+
+    command = (
+        "Rscript "
+        + code_dir
+        + "FEAST_marker.r "
+        + work_dir
+        + " "
+        + str(n_marker)
+        + " > stat_selection"
+    )
+    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep)
+
+    return job_id
 
 
 # high vaiable genes method
@@ -345,7 +386,7 @@ def high_variable(work_dir, data_dir="", n_marker=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-    job_id = sbatch(job_name="selection", command=command, dep=dep)
+    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep)
 
     return job_id
 
