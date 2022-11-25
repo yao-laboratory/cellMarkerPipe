@@ -7,7 +7,7 @@
 #import pipeline.pd as pd
 from pipeline import *
 #print(os)
-
+code_dir = PATH_TO_SOURCE + "/" + "src/"
 # function to check the status of the job
 def stats(dep=""):
     command = "samtools flagstat output.sam > stats.txt"
@@ -67,7 +67,6 @@ def sbatch(
 
 # step1: preprocess
 def preprocess(data_dir, work_dir, nvariable=2000, known_marker = False, keep_marker = False, Cluster=True, nPCA=10, max_RNA=2000, min_RNA=200, max_mt=5):
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     # preprocess
     command = (
@@ -106,7 +105,6 @@ def preprocess(data_dir, work_dir, nvariable=2000, known_marker = False, keep_ma
 
 
 def selection(work_dir, data_dir="", method="de", n_marker=10, dep="", **kwarg):
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     # map the inputs to the function blocks
     options = {
@@ -131,7 +129,6 @@ def selection(work_dir, data_dir="", method="de", n_marker=10, dep="", **kwarg):
 def evaluation(work_dir, nPCA=10, truncat_n = 0, method="", dep=""):
 
     # cluster again
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"    
     command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + method + " " + str(nPCA) + " " + str(truncat_n)
     # command = "python " + code_dir + "test.py"
     job_id_cluster = sbatch(job_name="re-cluster", command=command, work_dir=work_dir, dep=dep)
@@ -150,7 +147,6 @@ def evaluation(work_dir, nPCA=10, truncat_n = 0, method="", dep=""):
 # seurat differential analyses method
 def diff_express(work_dir, data_dir="", n_marker=10, dep=""):
     # n is the number of marker for each cluster
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     command = (
         "Rscript "
@@ -170,7 +166,6 @@ def diff_express(work_dir, data_dir="", n_marker=10, dep=""):
 # SC3 method
 def SC3_diff(work_dir,data_dir="", n_marker=10, dep=""):
     # n is the number of marker for each cluster
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     command = (
         "Rscript "
@@ -192,7 +187,6 @@ def scGenefit(
     work_dir, data_dir="",input_format="10X", n_marker=10, method="centers", epsilon= 1, redundancy=0.25, dep=""
 ):
     # code directory
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     # input files
     data_path = work_dir + "/data/norm_data_high_variable.csv"
@@ -230,7 +224,6 @@ def Comet(
     # others: other parameters for Comet, should be a string with the format described by Comet manual
     # this job needs python 36. Should be run under envrionment Py36
     # code directory
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
     if data_dir == "":
         # tried to use normalized data, error pop up
         tabmarker_file = work_dir + "/data/scale_data_high_variable.csv"
@@ -310,7 +303,6 @@ def Comet(
 
 # SCmarker method
 def SCmarker(work_dir, data_dir="", n_marker=10, k=100, n=10, dep=""):
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     command = (
         "Rscript "
@@ -335,7 +327,6 @@ def SCmarker(work_dir, data_dir="", n_marker=10, k=100, n=10, dep=""):
 # COSG method
 def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1, dep=""):
     # n is the number of marker for each cluster
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     command = (
         "Rscript "
@@ -355,7 +346,6 @@ def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1, dep=""):
 # FEAST method
 def FEASTmarker(work_dir,data_dir="", n_marker=10, dep=""):
     # n is the number of marker for each cluster
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     command = (
         "Rscript "
@@ -373,7 +363,6 @@ def FEASTmarker(work_dir,data_dir="", n_marker=10, dep=""):
 
 # high vaiable genes method
 def high_variable(work_dir, data_dir="", n_marker=10, dep=""):
-    code_dir = "/work/yaolab/yinglu/project/selection/pipeline/"
 
     command = (
         "Rscript "

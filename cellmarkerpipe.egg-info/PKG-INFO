@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: cellmarkerpipe
+Version: 0.0.0
+Summary: A pipeline to select marker genes.
+Home-page: UNKNOWN
+Author: Yinglu Jia
+License: UNKNOWN
+Platform: UNKNOWN
+
+# cellMarkerPipe
+
+### Overview
+CellMarkerPip is a pipeline designed to include recent popular tools of identifying marker genes using scRNAseq data and evaluate the effects of selected markers. Now the tools that have been built in CellMarkerPip are:  
+(1) FindAllMarkers by Seurat https://doi.org/10.1016/j.cell.2021.04.048  
+(2) scGenefit https://doi.org/10.1038/s41467-021-21453-4  
+(3) SCMarker https://doi.org/10.1371/journal.pcbi.1007445  
+(4) SC3 http://dx.doi.org/10.1038/nmeth.4236  
+(5) COMET https://doi.org/10.15252/msb.20199005  
+(6) COSG https://doi.org/10.1093/bib/bbab579  
+
+### Installation
+
+firstly using anaconda to set up envrionment. Then install the package with pip install.
+The installing files are provided under folder envrionment. Some methods have dependence conflict. You have to use the right one to set up environment
+
+### Tutorial
+
+The test file are provided under folder notebook. The test data are under folder data while the corresponding output are under folder ouput
+
+
