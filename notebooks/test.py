@@ -5,9 +5,9 @@ import os
 from pipeline import block
 
 # input data directory: 10X
-data_dir = "/work/yaolab/yinglu/project/selection/cellMarkerPipe/data/Zeisel/10x"
+data_dir = "../data/Zeisel/10x"
 # output data directory
-work_dir = "/work/yaolab/yinglu/project/selection/cellMarkerPipe/output"
+work_dir = "../output"
 if not os.path.isdir(work_dir):
     os.mkdir(work_dir)
 os.chdir(work_dir)
