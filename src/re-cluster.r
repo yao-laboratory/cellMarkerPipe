@@ -36,7 +36,7 @@ df.markers <- read.table(file.path(work.dir, "marker/marker_genes.txt"), sep="\t
 markers <- df.markers$markers
 # because Comet automatically change all genes to upper cases, so I need change all genes in the original matrix into upper case.
 markers <- toupper(markers)
-
+print("used markers to cluster:")
 print(markers)
 # Initialize the Seurat project object with the raw (non-normalized data).
 # here the count matrix is save as pbmc@assays$RNA@counts
@@ -80,10 +80,8 @@ print(markers)
 
 	pbmc <- FindNeighbors(pbmc, dims = 1:n.PCA)
 	pbmc <- FindClusters(pbmc, resolution = 0.5)
-	print("still go")
 # visualize cluster using UMAP
 	pbmc <- RunUMAP(pbmc, dims = 1:n.PCA)
-	print("I am alive")
 	plot_UMAP <- DimPlot(pbmc, reduction = "umap")
 	ggsave(file.path(cluster.dir, "UMAP.png"), plot_UMAP, width = 15, height = 10)
 
