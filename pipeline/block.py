@@ -126,10 +126,10 @@ def selection(work_dir, data_dir="", method="de", n_marker=10, dep="", partition
 # step 3: Evaluation
 
 # supervised evaluation
-def evaluation(work_dir, nPCA=10, truncat_n = 0, method="", dep="", partition="yaolab,batch", environment="gene_select"):
+def evaluation(work_dir, nPCA=10, truncat_n = 0, dep="", partition="yaolab,batch", environment="gene_select"):
 
     # cluster again
-    command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + method + " " + str(nPCA) + " " + str(truncat_n)
+    command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(truncat_n)
     # command = "python " + code_dir + "test.py"
     job_id_cluster = sbatch(job_name="re-cluster", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
 
