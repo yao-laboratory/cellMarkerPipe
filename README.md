@@ -40,7 +40,7 @@ os.chdir(work_dir)
 block.preprocess(data_dir=data_dir, work_dir=work_dir, nvariable=2000, Cluster=False, max_RNA = 2500, max_mt = 5)
 ```
 The step is going to output a 'data' folder under your 'work_dir', which include meta-data needed for the next steps.  
-Here "max_RNA" and "max_mt" are parameters to filter genes coarsely. You can choose propariate value by visualize the distribution of genes and cells, which can be found under output "data" folder. "nvariable" is the number of selected highly variable genes for selection in the next step. This parameter cut off the number of genes for selection method to work on. "Cluster" decides whether you need to do cluster in this step. If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. 
+Here "max_RNA" and "max_mt" are parameters to filter genes coarsely. You can choose propariate value by visualize the distribution of genes and cells, which can be found under output "data" folder. "nvariable" is the number of selected highly variable genes for selection in the next step. This parameter cut off the number of genes for selection method to work on. "Cluster" decides whether you need to do cluster in this step. If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. Using the example data, this step takes less than 10 seconds. 
 
 ##### Select Marker Genes
 ``` python
@@ -51,10 +51,11 @@ The parameter method decide which method you want to use to perform maker-gene s
 | Method | FindAllMarkers    | scGenefit    | SCMarker | SC3 |COMET|COSG|
 | :---:   | :---: | :---: |:---: |:---: |:---: |:---: |
 | Shortname | de   | scG   | SC | sc3 | Com | cos | 
+Using the example data, this step takes about a few minutes depending on which method you use. 
 ##### Evaluation
 If you want to evaluate the marker genes selected in the last step, we provided the unsupervised method to calculate indexs to evalute how these marker genes can seperate the cell, including ARI et. al. 
 ``` python
 block.evaluation(work_dir, nPCA=10)
 ```
-You can find out the calculated index under folder 'evaluation'.  
+You can find out the calculated index under folder 'evaluation'.  Using the example data, this step takes about less than 10 seconds. 
 The above steps have been included into the test file under folder 'notebook'. The test data are under folder 'data' while the corresponding output are under folder 'ouput'.
