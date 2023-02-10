@@ -47,11 +47,12 @@ Here "max_RNA" and "max_mt" are parameters to filter genes coarsely. You can cho
 block.selection(work_dir=work_dir, data_dir ="", method="de")
 ```
 This step is going to ouput a 'marker' folder, in which you can find the marker genes for each group in file `marker_gene_per_group.csv`.
-The parameter method decide which method you want to use to perform maker-gene selection. Here are the mapping between the method and its shortname:
+The parameter method decide which method you want to use to perform maker-gene selection. Using the example data, this step takes about a few minutes depending on which method you use.
+Here are the mapping between the method and its shortname:
 | Method | FindAllMarkers    | scGenefit    | SCMarker | SC3 |COMET|COSG|
 | :---:   | :---: | :---: |:---: |:---: |:---: |:---: |
 | Shortname | de   | scG   | SC | sc3 | Com | cos | 
-Using the example data, this step takes about a few minutes depending on which method you use. 
+ 
 ##### Evaluation
 If you want to evaluate the marker genes selected in the last step, we provided the unsupervised method to calculate indexs to evalute how these marker genes can seperate the cell, including ARI et. al. 
 ``` python
