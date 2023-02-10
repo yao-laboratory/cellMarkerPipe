@@ -10,7 +10,7 @@ CellMarkerPip is a pipeline designed to include recent popular tools of identify
 (6) COSG https://doi.org/10.1093/bib/bbab579  
 
 ### Installation
-This pipeline supports different gene-selection method writen by different language (python & R) by using Slurm job manager, which means now the code can only be operated on the cluster with Slurm queque system.  
+This pipeline supports different gene-selection method writen by different language (python & R).  
 After download the package to your cluster, firstly use anaconda to set up envrionment, then install the package with pip install.  
 These steps have been included into installing files under folder "envrionment". Some methods have dependence conflict. You have to use the right one to set up environment.
 For example, if you want to use seurat method, then you should copy the seurat.sh under the cellMarkerPipe directory and run
@@ -37,14 +37,14 @@ os.chdir(work_dir)
 ```
 ##### Preperation
 ``` python
-job_id_preprocess = block.preprocess(data_dir=data_dir, work_dir=work_dir, nvariable=2000, Cluster=False, max_RNA = 2500, max_mt = 5)
+block.preprocess(data_dir=data_dir, work_dir=work_dir, nvariable=2000, Cluster=False, max_RNA = 2500, max_mt = 5)
 ```
 The step is going to output a 'data' folder under your 'work_dir', which include meta-data needed for the next steps.  
 Here "max_RNA" and "max_mt" are parameters to filter genes coarsely. You can choose propariate value by visualize the distribution of genes and cells, which can be found under output "data" folder. "nvariable" is the number of selected highly variable genes for selection in the next step. This parameter cut off the number of genes for selection method to work on. "Cluster" decides whether you need to do cluster in this step. If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. 
 
 ##### Select Marker Genes
 ``` python
-job_id_selection = block.selection(work_dir=work_dir, data_dir ="", method="de", dep=job_id_preprocess)
+block.selection(work_dir=work_dir, data_dir ="", method="de")
 ```
 This step is going to ouput a 'marker' folder, in which you can find the marker genes for each group in file `marker_gene_per_group.csv`.
 The parameter method decide which method you want to use to perform maker-gene selection. Here are the mapping between the method and its shortname:
@@ -54,7 +54,7 @@ The parameter method decide which method you want to use to perform maker-gene s
 ##### Evaluation
 If you want to evaluate the marker genes selected in the last step, we provided the unsupervised method to calculate indexs to evalute how these marker genes can seperate the cell, including ARI et. al. 
 ``` python
-job_id_evaluation = block.evaluation(work_dir, nPCA=10, dep=job_id_selection)
+block.evaluation(work_dir, nPCA=10)
 ```
 You can find out the calculated index under folder 'evaluation'.  
 The above steps have been included into the test file under folder 'notebook'. The test data are under folder 'data' while the corresponding output are under folder 'ouput'.
