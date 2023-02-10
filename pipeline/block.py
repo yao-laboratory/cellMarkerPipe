@@ -39,9 +39,9 @@ def preprocess(data_dir, work_dir, nvariable=2000, known_marker = False, keep_ma
         + str(nPCA)
         + " > stat_preprocess"
     )
-#    job_id = sbatch(job_name="preprocess", command=command, work_dir=work_dir, partition=partition, environment=environment)
+
     os.system(command)
-#    print(job_id)
+
 
     return
 
@@ -50,7 +50,7 @@ def preprocess(data_dir, work_dir, nvariable=2000, known_marker = False, keep_ma
 # step 2: Selection
 
 
-def selection(work_dir, data_dir="", method="de", n_marker=10, dep="", **kwarg):
+def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
 
     # map the inputs to the function blocks
     options = {
@@ -64,7 +64,7 @@ def selection(work_dir, data_dir="", method="de", n_marker=10, dep="", **kwarg):
         "hv": high_variable # by group
     }
 
-    options[method](work_dir=work_dir, data_dir=data_dir, n_marker=n_marker, dep=dep, partition=partition, environment=environment,  **kwarg)
+    options[method](work_dir=work_dir, data_dir=data_dir, n_marker=n_marker,  **kwarg)
     return
 
 
@@ -72,28 +72,25 @@ def selection(work_dir, data_dir="", method="de", n_marker=10, dep="", **kwarg):
 # step 3: Evaluation
 
 # supervised evaluation
-def evaluation(work_dir, nPCA=10, truncat_n = 0, dep=""):
+def evaluation(work_dir, nPCA=10, truncat_n = 0):
 
     # cluster again
     command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(truncat_n)
-    # command = "python " + code_dir + "test.py"
-    #job_id_cluster = sbatch(job_name="re-cluster", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+   
     os.system(command)
-
-    #print(job_id_cluster)
 
     # compare y_predict with y_true
     command = "python " + code_dir + "evaluation.py " + work_dir + " > stat_evaluation"
 
-    #job_id = sbatch(job_name="evaluation", command=command, work_dir=work_dir, dep=str(job_id_cluster), partition=partition, environment=environment)
+    
     os.system(command)
-#    print(job_id)
+
     return
 
 
 
 # seurat differential analyses method
-def diff_express(work_dir, data_dir="", n_marker=10, dep=""):
+def diff_express(work_dir, data_dir="", n_marker=10):
     # n is the number of marker for each cluster
 
     command = (
@@ -105,7 +102,7 @@ def diff_express(work_dir, data_dir="", n_marker=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-    #job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+   
     os.system(command)
 
     return
@@ -114,7 +111,7 @@ def diff_express(work_dir, data_dir="", n_marker=10, dep=""):
 
 # SC3 method
 # use envrionment yingluR4.1
-def SC3_diff(work_dir,data_dir="", n_marker=10, dep=""):
+def SC3_diff(work_dir,data_dir="", n_marker=10):
     # n is the number of marker for each cluster
 
     command = (
@@ -126,7 +123,6 @@ def SC3_diff(work_dir,data_dir="", n_marker=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-    #job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
     os.system(command)
 
     return
@@ -135,7 +131,7 @@ def SC3_diff(work_dir,data_dir="", n_marker=10, dep=""):
 
 # scGenefit method
 def scGenefit(
-    work_dir, data_dir="",input_format="10X", n_marker=10, method="centers", epsilon= 1, redundancy=0.25, dep=""):
+    work_dir, data_dir="",input_format="10X", n_marker=10, method="centers", epsilon= 1, redundancy=0.25):
     # code directory
 
     # input files
@@ -156,7 +152,7 @@ def scGenefit(
         + str(epsilon)
         + " > stat_selection"
     )
-#    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+
     os.system(command)
 
     return
@@ -165,7 +161,7 @@ def scGenefit(
 
 # Comet method
 # use envrionment py36
-def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, dep="", others=""):
+def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, others=""):
     # data_dir is the directory that users have their own 3 files "tabcluster.txt  tabmarker.txt  tabvis.txt"
     # otherwise, the user needs cluster first, and the input files will be prduced by the last "preprocess" step
     # vis: wehter visulize with Comet, if vis==True, then need to provide a tabvis.txt file under data_dir, or work_dir/cluster
@@ -231,8 +227,7 @@ def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, dep="", othe
                 + " marker/ -skipvis True "
                 + others
             )
-    #print(command)
-    #job_id_comet = sbatch(job_name="selection",time=24, command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+
     os.system(command)
     # get top # of markers
      # compare y_predict with y_true
@@ -246,7 +241,6 @@ def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, dep="", othe
                + str(if_pair)
                + " > stat_comet_result")
 
-    #job_id = sbatch(job_name="comet_result", time=8, command=command, work_dir=work_dir, dep=str(job_id_comet), partition=partition, environment=environment)
     os.system(command)
     
     return
@@ -254,7 +248,7 @@ def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, dep="", othe
 
 
 # SCmarker method
-def SCmarker(work_dir, data_dir="", n_marker=10, k=100, n=10, dep=""):
+def SCmarker(work_dir, data_dir="", n_marker=10, k=100, n=10):
 
     command = (
         "Rscript "
@@ -271,14 +265,14 @@ def SCmarker(work_dir, data_dir="", n_marker=10, k=100, n=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-#    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+
     os.system(command)
 
     return
 
 
 # COSG method
-def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1, dep=""):
+def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1):
     # n is the number of marker for each cluster
 
     command = (
@@ -292,13 +286,13 @@ def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1, dep=""):
         + str(mu)
         + " > stat_selection"
     )
-   # job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+   
     os.system(command)
 
     return
 
 # FEAST method
-def FEASTmarker(work_dir,data_dir="", n_marker=10, dep=""):
+def FEASTmarker(work_dir,data_dir="", n_marker=10):
     # n is the number of marker for each cluster
 
     command = (
@@ -310,14 +304,14 @@ def FEASTmarker(work_dir,data_dir="", n_marker=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-#    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+
     os.system(command)
 
     return
 
 
 # high vaiable genes method
-def high_variable(work_dir, data_dir="", n_marker=10, dep=""):
+def high_variable(work_dir, data_dir="", n_marker=10):
 
     command = (
         "Rscript "
@@ -330,7 +324,7 @@ def high_variable(work_dir, data_dir="", n_marker=10, dep=""):
         + str(n_marker)
         + " > stat_selection"
     )
-#    job_id = sbatch(job_name="selection", command=command, work_dir=work_dir, dep=dep, partition=partition, environment=environment)
+
     os.system(command)
 
     return
