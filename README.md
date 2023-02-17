@@ -20,13 +20,15 @@ bash seurat.sh
 
 ### Tutorial
 #### Input
-The neccessary input file is the counts matrix data in 10x format (`matrix.mtx`, `gene.tsv` and `barcode.tsv`) under 'data_dir'. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `group.csv` under 'data_dir'. The "group.csv" needs to contain 2 columns seperated by ",": the first one is the cell barcodes same with `barcode.tsv` and the second one is the group name. Then you can run the pipeline as example below:
+The neccessary input file is the counts matrix data in 10x format (`matrix.mtx`, `gene.tsv` and `barcode.tsv`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `group.csv` under `DATADIR`. The "group.csv" needs to contain 2 columns seperated by ",": the first one is the cell barcodes same with `barcode.tsv` and the second one is the group name. Then you can run the pipeline as example below:
 
 #### Using cellMarkerPipe as commander
 ##### Step 0: cellMarkerPipe Overview
+cellMarkerPipe is able to be run in command line. With the input
 ``` bash
 cellMarkerPipe --help
 ```
+We can find this pipepline has 3 main steps: preprocess, selection and evaluation. 
 ```bash
 usage: cellMarkerPipe [-h] [--version] {preprocess,selection,evaluation} ...
 
@@ -43,10 +45,14 @@ optional arguments:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
 ```
+
 ##### Step 1: Preperation
+To run `preperation` step, you can use command
 ``` bash
- python cellMarkerPipe.py preprocess -h
+cellMarkerPipe.py preprocess -h
 ```
+to check all possible parameters you can work with.
+
 ``` bash
 usage: cellMarkerPipe preprocess [-h] [-wd WORKDIR] [-10xd DATADIR] [-nvb NVARIABLE] [--cluster] [--no-cluster] [-maR MAXRNA]
                                  [-mam MAXMT]
@@ -66,9 +72,11 @@ optional arguments:
   -mam MAXMT, --maxmt MAXMT
                         max number of MT genes for each cell
 ```
+
+Here the `WORKDIR`, `DATADIR` are requiered to be provided with absolute or relative path. After this step is finished, 
 ##### Step 2: Select Marker Genes
 ``` bash
-python cellMarkerPipe.py selection -h
+cellMarkerPipe.py selection -h
 ```
 ``` basusage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
 
@@ -84,7 +92,7 @@ optional arguments:
 ```
 ##### Step 3: Evaluation
 ```bash
-python cellMarkerPipe.py evaluation -h
+cellMarkerPipe.py evaluation -h
 ```
 ```bash
 usage: cellMarkerPipe evaluation [-h] [-wd WORKDIR] [-np NPCA]
