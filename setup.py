@@ -13,6 +13,7 @@ setup(
     author="Yinglu Jia",
     packages=find_packages(include=['pipeline']),
     long_description=read('README.md'),
+    entry_points = {'console_scripts': ['cellMarkerPipe=pipeline.cellMarkerPipe:main']},
     install_requires=[
         'pandas',
         'numpy'
