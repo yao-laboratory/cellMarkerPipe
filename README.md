@@ -136,7 +136,7 @@ os.chdir(work_dir)
 ``` python
 block.preprocess(data_dir=data_dir, work_dir=work_dir, nvariable=2000, Cluster=False, max_RNA = 2500, max_mt = 5)
 ```
-Here `navriable`, 'max_RNA' and 'max_mt' are the same parameters corresponding to `NVARIABLE`, `MAXRNA` and `MAXMT` inseperately  command line. "Cluster" decides whether you need to do cluster in this step (same as `--cluster` and `--no-cluster`). If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. 
+Here `navriable`, `max_RNA` and `max_mt` are the same parameters corresponding to `NVARIABLE`, `MAXRNA` and `MAXMT` inseperately  command line. "Cluster" decides whether you need to do cluster in this step (same as `--cluster` and `--no-cluster`). If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. 
 
 ##### Step 2: Select Marker Genes
 ``` python
