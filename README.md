@@ -12,7 +12,7 @@ CellMarkerPip is a pipeline designed to include recent popular tools of identify
 ### Installation
 This pipeline supports different gene-selection method writen by different language (python & R).  
 After download the package to your cluster, firstly use anaconda to set up envrionment, then install the package with pip install.  
-These steps have been included into installing files under folder "envrionment". Some methods have dependence conflict. You have to use the right one to set up environment.
+These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment.
 For example, if you want to use seurat method, then you should copy the seurat.sh under the cellMarkerPipe directory and run
 ``` shell
 bash seurat.sh
@@ -20,7 +20,7 @@ bash seurat.sh
 
 ### Tutorial
 #### Input
-The neccessary input file is the counts matrix data in 10x format (`matrix.mtx`, `gene.tsv` and `barcode.tsv`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `group.csv` under `DATADIR`. The "group.csv" needs to contain 2 columns seperated by ",": the first one is the cell barcodes same with `barcode.tsv` and the second one is the group name. Then you can run the pipeline as example below:
+The neccessary input file is the counts matrix data in 10x format (`matrix.mtx`, `gene.tsv` and `barcode.tsv`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `group.csv` under `DATADIR`. The `group.csv` needs to contain 2 columns seperated by ",": the first one is the cell barcodes same with `barcode.tsv` and the second one is the group name. Then you can run the pipeline as example below:
 
 #### Using cellMarkerPipe in command-line mode
 ##### Step 0: cellMarkerPipe Overview
