@@ -24,13 +24,78 @@ The neccessary input file is the counts matrix data in 10x format (`matrix.mtx`,
 
 #### Using cellMarkerPipe as commander
 ##### Step 0: cellMarkerPipe Overview
+``` bash
 cellMarkerPipe --help
+```
+```bash
+usage: cellMarkerPipe [-h] [--version] {preprocess,selection,evaluation} ...
 
+Find marker genes for single cell datasets
 
+positional arguments:
+  {preprocess,selection,evaluation}
+                        help for subcommand: preprocess, selection, evaluation
+    preprocess          Preprocess the 10x data
+    selection           Select marker genes
+    evaluation          Evaluate selected marker genes
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+```
 ##### Step 1: Preperation
-##### Step 2: Select Marker Genes
-##### Step 3: Evaluation
+``` bash
+ python cellMarkerPipe.py preprocess -h
+```
+``` bash
+usage: cellMarkerPipe preprocess [-h] [-wd WORKDIR] [-10xd DATADIR] [-nvb NVARIABLE] [--cluster] [--no-cluster] [-maR MAXRNA]
+                                 [-mam MAXMT]
 
+optional arguments:
+  -h, --help            show this help message and exit
+  -wd WORKDIR, --workdir WORKDIR
+                        Working directory
+  -10xd DATADIR, --10xdir DATADIR
+                        10x data directory
+  -nvb NVARIABLE, --nvariable NVARIABLE
+                        The number of highly variable genes selected for later selection
+  --cluster             Do cluster
+  --no-cluster          Do not do cluster
+  -maR MAXRNA, --maxRNA MAXRNA
+                        max number of RNA for each cell
+  -mam MAXMT, --maxmt MAXMT
+                        max number of MT genes for each cell
+```
+##### Step 2: Select Marker Genes
+``` bash
+python cellMarkerPipe.py selection -h
+```
+``` basusage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -wd WORKDIR, --workdir WORKDIR
+                        Working directory
+  -10xd DATADIR, --10xdir DATADIR
+                        10x data directory
+  -m METHOD, --method METHOD
+                        Method used for selection
+
+```
+##### Step 3: Evaluation
+```bash
+python cellMarkerPipe.py evaluation -h
+```
+```bash
+usage: cellMarkerPipe evaluation [-h] [-wd WORKDIR] [-np NPCA]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -wd WORKDIR, --workdir WORKDIR
+                        Working directory
+  -np NPCA, --nPCA NPCA
+                        The number of PCA chosen for re-cluster
+```
 #### Using cellMarkerPipe as library
 
 ##### Step 0: Import pipeline and define data_dir and work_dir
