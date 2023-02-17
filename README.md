@@ -124,9 +124,9 @@ For developers, we also provide you a method to use cellMarkerPipe as a library.
 ``` python
 from pipeline import block
 import os
-# input data directory: 10X
+# input data directory: 10X. Same parameter as "DATADIR" in command line mode
 data_dir = "YOUR_DATA_DIR"
-# output data directory
+# output data directory. Same parameter as "WORKDIR" in command line mode
 work_dir = "YOUR_WORK_DIR"
 if not os.path.isdir(work_dir):
     os.mkdir(work_dir)
@@ -136,20 +136,16 @@ os.chdir(work_dir)
 ``` python
 block.preprocess(data_dir=data_dir, work_dir=work_dir, nvariable=2000, Cluster=False, max_RNA = 2500, max_mt = 5)
 ```
-The step is going to output a 'data' folder under your 'work_dir', which include meta-data needed for the next steps.  
-Here "max_RNA" and "max_mt" are parameters to filter genes coarsely. You can choose propariate value by visualize the distribution of genes and cells, which can be found under output "data" folder. "nvariable" is the number of selected highly variable genes for selection in the next step. This parameter cut off the number of genes for selection method to work on. "Cluster" decides whether you need to do cluster in this step. If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. 
+Here `navriable`, 'max_RNA' and 'max_mt' are the same parameters corresponding to `NVARIABLE`, `MAXRNA` and `MAXMT` inseperately  command line. "Cluster" decides whether you need to do cluster in this step (same as `--cluster` and `--no-cluster`). If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. 
 
 ##### Step 2: Select Marker Genes
 ``` python
 block.selection(work_dir=work_dir, data_dir ="", method="de")
 ```
-This step is going to ouput a 'marker' folder, in which you can find the marker genes for each group in file `marker_gene_per_group.csv`.
-The parameter method decide which method you want to use to perform maker-gene selection. 
- 
+Here `method` is the same parameter as `METHOD` in command line 
 ##### Step 3: Evaluation
-If you want to evaluate the marker genes selected in the last step, we provided the unsupervised method to c
 ``` python
 block.evaluation(work_dir, nPCA=10)
 ```
-You can find out the calculated index under folder 'evaluation'. 
-The above steps have been included into the test file under folder 'notebook'. The test data are under folder 'data' while the corresponding output are under folder 'ouput'.
+`nPCA` is the same parameter as `NPCA` in command line
+The above steps have been included into the test file under folder 'notebook'. The test data are under folder 'data'.
