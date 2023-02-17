@@ -22,14 +22,14 @@ bash seurat.sh
 #### Input
 The neccessary input file is the counts matrix data in 10x format (`matrix.mtx`, `gene.tsv` and `barcode.tsv`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `group.csv` under `DATADIR`. The "group.csv" needs to contain 2 columns seperated by ",": the first one is the cell barcodes same with `barcode.tsv` and the second one is the group name. Then you can run the pipeline as example below:
 
-#### Using cellMarkerPipe as commander
+#### Using cellMarkerPipe in command-line mode
 ##### Step 0: cellMarkerPipe Overview
 cellMarkerPipe is able to be run in command line. With the input
 ``` bash
 cellMarkerPipe --help
 ```
 We can find this pipepline has 3 main steps: preprocess, selection and evaluation. 
-```bash
+```
 usage: cellMarkerPipe [-h] [--version] {preprocess,selection,evaluation} ...
 
 Find marker genes for single cell datasets
@@ -53,7 +53,7 @@ cellMarkerPipe.py preprocess -h
 ```
 to check all possible parameters you can work with.
 
-``` bash
+```
 usage: cellMarkerPipe preprocess [-h] [-wd WORKDIR] [-10xd DATADIR] [-nvb NVARIABLE] [--cluster] [--no-cluster] [-maR MAXRNA]
                                  [-mam MAXMT]
 
@@ -73,12 +73,15 @@ optional arguments:
                         max number of MT genes for each cell
 ```
 
-Here the `WORKDIR`, `DATADIR` are requiered to be provided with absolute or relative path. After this step is finished, 
+Here the `WORKDIR`, `DATADIR` are requiered to be provided with an absolute path. After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated. The `stat_preprocess` include the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. The number of high variable genes you want to study with in the next step can be set up using `NVARIABLE` parameter. `--cluster` or `--no-cluster` decides whether you need the programe to do cluster process firstly, which depends on whether you provide input file of `group.csv`.  A meta-ouput of distribution_of_features_counts.png provide you with a reference to coarsely filter genes coarsely by choosing appropriate truncate of max number of RNA for each cell (`MAXRNA`) and max number of MT genes for each cell(`MAXMT`), which are also important to keep the informative genes while clean genes and cell at the tail of the distribution to eliminating noise to the dataset.Using the example data, this step takes less than 10 seconds. 
 ##### Step 2: Select Marker Genes
+Before you start running `selection` step, you can also use command
 ``` bash
 cellMarkerPipe.py selection -h
 ```
-``` basusage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
+to check all possible parameters you can set up.
+```
+usage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -90,11 +93,20 @@ optional arguments:
                         Method used for selection
 
 ```
+Here, `WORKDIR` and `DATADIR` should keep the same as last step. Then you need to choose the method you want to use. Here are the mapping between the method and its shortname:
+| Method | FindAllMarkers    | scGenefit    | SCMarker | SC3 |COMET|COSG|
+| :---:   | :---: | :---: |:---: |:---: |:---: |:---: |
+| Shortname | de   | scG   | SC | sc3 | Com | cos | 
+
+Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference.
 ##### Step 3: Evaluation
+We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. You can use command
 ```bash
 cellMarkerPipe.py evaluation -h
 ```
-```bash
+to learn how to use it.
+
+```
 usage: cellMarkerPipe evaluation [-h] [-wd WORKDIR] [-np NPCA]
 
 optional arguments:
@@ -104,7 +116,9 @@ optional arguments:
   -np NPCA, --nPCA NPCA
                         The number of PCA chosen for re-cluster
 ```
-#### Using cellMarkerPipe as library
+This evaluation needs to redo the cluster process using only the selected markers. So you can set up `nPCA` to optimize this cluster process. `WORKDIR` should keep the same.  Using the example data, this step takes about less than 10 seconds. After you finished this step, the calculated index can be find under folder `evaluation` with a filename `result.csv`. the program also create a `re-cluster` folder under the `WORKDIR` which is the output of the cluster process.
+#### Using cellMarkerPipe as a library
+For developers, we also provide you a method to use cellMarkerPipe as a library. The way how to use it is similar to the command line mode.
 
 ##### Step 0: Import pipeline and define data_dir and work_dir
 ``` python
@@ -123,23 +137,19 @@ os.chdir(work_dir)
 block.preprocess(data_dir=data_dir, work_dir=work_dir, nvariable=2000, Cluster=False, max_RNA = 2500, max_mt = 5)
 ```
 The step is going to output a 'data' folder under your 'work_dir', which include meta-data needed for the next steps.  
-Here "max_RNA" and "max_mt" are parameters to filter genes coarsely. You can choose propariate value by visualize the distribution of genes and cells, which can be found under output "data" folder. "nvariable" is the number of selected highly variable genes for selection in the next step. This parameter cut off the number of genes for selection method to work on. "Cluster" decides whether you need to do cluster in this step. If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. Using the example data, this step takes less than 10 seconds. 
+Here "max_RNA" and "max_mt" are parameters to filter genes coarsely. You can choose propariate value by visualize the distribution of genes and cells, which can be found under output "data" folder. "nvariable" is the number of selected highly variable genes for selection in the next step. This parameter cut off the number of genes for selection method to work on. "Cluster" decides whether you need to do cluster in this step. If you do not provide `group.csv`, then this parameter has to be turn to "TRUE", which will execute Seurat clustering cells. 
 
 ##### Step 2: Select Marker Genes
 ``` python
 block.selection(work_dir=work_dir, data_dir ="", method="de")
 ```
 This step is going to ouput a 'marker' folder, in which you can find the marker genes for each group in file `marker_gene_per_group.csv`.
-The parameter method decide which method you want to use to perform maker-gene selection. Using the example data, this step takes about a few minutes depending on which method you use.
-Here are the mapping between the method and its shortname:
-| Method | FindAllMarkers    | scGenefit    | SCMarker | SC3 |COMET|COSG|
-| :---:   | :---: | :---: |:---: |:---: |:---: |:---: |
-| Shortname | de   | scG   | SC | sc3 | Com | cos | 
+The parameter method decide which method you want to use to perform maker-gene selection. 
  
 ##### Step 3: Evaluation
-If you want to evaluate the marker genes selected in the last step, we provided the unsupervised method to calculate indexs to evalute how these marker genes can seperate the cell, including ARI et. al. 
+If you want to evaluate the marker genes selected in the last step, we provided the unsupervised method to c
 ``` python
 block.evaluation(work_dir, nPCA=10)
 ```
-You can find out the calculated index under folder 'evaluation'.  Using the example data, this step takes about less than 10 seconds. 
+You can find out the calculated index under folder 'evaluation'. 
 The above steps have been included into the test file under folder 'notebook'. The test data are under folder 'data' while the corresponding output are under folder 'ouput'.
