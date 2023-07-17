@@ -48,7 +48,7 @@ optional arguments:
 ##### Step 1: Preperation
 To run `preperation` step, you can use command
 ``` bash
-python cellMarkerPipe.py preprocess -wd ./ -10xd /./cellMarkerPipe/data/Zeisel/10x
+python cellMarkerPipe.py preprocess -wd ./ -10xd /.../cellMarkerPipe/data/Zeisel/10x
 ```
 ```
 usage: cellMarkerPipe preprocess [-h] [-wd WORKDIR] [-10xd DATADIR] [-nvb NVARIABLE] [--cluster] [--no-cluster] [-maR MAXRNA]
