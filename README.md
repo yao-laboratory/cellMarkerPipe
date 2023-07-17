@@ -48,7 +48,7 @@ optional arguments:
 ##### Step 1: Preperation
 To run `preperation` step, you can use command
 ``` bash
-cellMarkerPipe.py preprocess -h
+python cellMarkerPipe.py preprocess -h
 ```
 to check all possible parameters you can work with.
 
