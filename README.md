@@ -98,10 +98,8 @@ Using the example data, this step takes about a few minutes depending on which m
 ##### Step 3: Evaluation
 We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. You can use command
 ```bash
-cellMarkerPipe.py evaluation -h
+python cellMarkerPipe.py evaluation -wd -np
 ```
-to learn how to use it.
-
 ```
 usage: cellMarkerPipe evaluation [-h] [-wd WORKDIR] [-np NPCA]
 
