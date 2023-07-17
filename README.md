@@ -74,9 +74,8 @@ Here the `WORKDIR`, `DATADIR` are requiered to be provided with an absolute path
 ##### Step 2: Select Marker Genes
 Before you start running `selection` step, you can also use command
 ``` bash
-cellMarkerPipe.py selection -h
+python cellMarkerPipe.py selection -wd /.../cellMarkerPipe -10xd /.../cellMarkerPipe/data/Zeisel/10x -m de
 ```
-to check all possible parameters you can set up.
 ```
 usage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
 
