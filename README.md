@@ -26,7 +26,7 @@ The neccessary input file is the counts matrix data in 10x format (`matrix.mtx`,
 ##### Step 0: cellMarkerPipe Overview
 cellMarkerPipe is able to be run in command line. With the input
 ``` bash
-cellMarkerPipe --help
+python cellMarkerPipe.py -h
 ```
 We can find this pipepline has 3 main steps: preprocess, selection and evaluation. 
 ```
