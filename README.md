@@ -72,7 +72,7 @@ optional arguments:
 
 Here the `WORKDIR`, `DATADIR` are requiered to be provided with an absolute path. After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated. The `stat_preprocess` include the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. The number of high variable genes you want to study with in the next step can be set up using `NVARIABLE` parameter. `--cluster` or `--no-cluster` decides whether you need the programe to do cluster process firstly, which depends on whether you provide input file of `group.csv`.  A meta-ouput of distribution_of_features_counts.png provide you with a reference to coarsely filter genes coarsely by choosing appropriate truncate of max number of RNA for each cell (`MAXRNA`) and max number of MT genes for each cell(`MAXMT`), which are also important to keep the informative genes while clean genes and cell at the tail of the distribution to eliminating noise to the dataset.Using the example data, this step takes less than 10 seconds. 
 ##### Step 2: Select Marker Genes
-Before you start running `selection` step, you can also use command
+To run `selection` step, you can use command
 ``` bash
 python cellMarkerPipe.py selection -wd /.../cellMarkerPipe -10xd /.../cellMarkerPipe/data/Zeisel/10x -m de
 ```
@@ -89,7 +89,7 @@ optional arguments:
                         Method used for selection
 
 ```
-Here, `WORKDIR` and `DATADIR` should keep the same as last step. Then you need to choose the method you want to use. Here are the mapping between the method and its shortname:
+Here, `WORKDIR` and `DATADIR` should keep the same as `preperation` step. Then you need to choose the method you want to use. Here are the mapping between the method and its shortname:
 | Method | FindAllMarkers    | scGenefit    | SCMarker | SC3 |COMET|COSG|
 | :---:   | :---: | :---: |:---: |:---: |:---: |:---: |
 | Shortname | de   | scG   | SC | sc3 | Com | cos | 
