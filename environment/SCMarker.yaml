@@ -1,0 +1,18 @@
+name: SCMarker_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.9
+  - r=4.1
+  - r-seurat
+  - bioconductor-dropletutils
+  - r-devtools
+  - scikit-learn
+  - pip
+  - pip:
+   - pandas
+
+# Run the R commands to install the SCMarker package
+# R -e "devtools::install_github('KChen-lab/SCMarker')"
