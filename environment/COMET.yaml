@@ -1,4 +1,4 @@
-name: COMETSC_env
+name: COMET_env
 channels:
   - conda-forge
   - bioconda
