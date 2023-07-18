@@ -1,0 +1,13 @@
+name: COMETSC_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.6
+  - r=4.1
+  - r-seurat
+  - bioconductor-dropletutils
+  - pip
+  - pip:
+    - COMETSC
