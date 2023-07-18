@@ -14,8 +14,8 @@ def main():
     parser.add_argument('--version', action='version', version=__version__)
     
     parser_a = subparsers.add_parser('preprocess', help='Preprocess the 10x data')
-    parser_a.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir")
-    parser_a.add_argument('-10xd','--10xdir', type=str, help='10x data directory',dest="datadir")
+    parser_a.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir",required=True)
+    parser_a.add_argument('-10xd','--10xdir', type=str, help='10x data directory',dest="datadir",required=True)
     parser_a.add_argument('-nvb','--nvariable', type=int, default=2000,  help='The number of highly variable genes selected for later selection',dest="nvariable")
     parser_a.add_argument('--cluster', dest='cluster', action='store_true', help="Do cluster")
     parser_a.add_argument('--no-cluster', dest='cluster', action='store_false', help="Do not do cluster")
@@ -23,12 +23,12 @@ def main():
     parser_a.add_argument('-mam','--maxmt', type=int, default=5, help='max number of MT genes for each cell',dest="maxmt")
 
     parser_b = subparsers.add_parser('selection', help='Select marker genes')
-    parser_b.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir")
-    parser_b.add_argument('-10xd','--10xdir', type=str, help='10x data directory',dest="datadir")
-    parser_b.add_argument('-m','--method', type=str, help='Method used for selection',dest="method")
+    parser_b.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir",required=True)
+    parser_b.add_argument('-10xd','--10xdir', type=str, help='10x data directory',dest="datadir",required=True)
+    parser_b.add_argument('-m','--method', type=str, help='Method used for selection',dest="method",required=True)
 
     parser_c = subparsers.add_parser('evaluation', help='Evaluate selected marker genes')
-    parser_c.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir")
+    parser_c.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir",required=True)
     parser_c.add_argument('-np', '--nPCA', type=int, default=10, help='The number of PCA chosen for re-cluster',dest="npca")
 
 
