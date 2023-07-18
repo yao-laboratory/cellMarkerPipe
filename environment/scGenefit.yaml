@@ -1,0 +1,14 @@
+name: scGenefit_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.9
+  - r=4.1
+  - r-seurat
+  - bioconductor-dropletutils
+  - pip
+  - pip:
+    - scanpy
+    - scGenefit
