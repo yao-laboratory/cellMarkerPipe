@@ -1,0 +1,23 @@
+name: seurat_env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - r-base=4.1
+  - pip
+  - scikit-learn
+  - pip:
+    - pandas
+  - r-dplyr
+  - r-seurat
+  - r-biocmanager
+  - bioconductor-dropletutils
+  
+  
+#conda install python=3.9
+#conda install -c conda-forge r=4.1
+#pip install pandas
+#Rscript -e "install.packages('dplyr', repos='http://cran.rstudio.com/')"
+#Rscript -e "install.packages('Seurat', repos='http://cran.rstudio.com/')"
+#Rscript -e "install.packages('BiocManager', repos='http://cran.rstudio.com/'); BiocManager::install('GenomeInfoDb')"
+#Rscript -e "BiocManager::install('GenomeInfoDb', force = TRUE)"
