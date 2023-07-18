@@ -1,0 +1,21 @@
+name: sc3_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.9
+  - r=4.1
+  - r-seurat
+  - bioconductor-dropletutils
+  - r-biocmanager
+  - pip
+  - pip:
+    - pandas
+    
+############# Then install R package
+# R'''
+#if (!require("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+
+#BiocManager::install("SC3")
