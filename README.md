@@ -13,7 +13,7 @@ CellMarkerPip is a pipeline designed to include recent popular tools of identify
 This pipeline supports different gene-selection method writen by different language (python & R).  
 After download the package to your cluster, firstly use anaconda to set up envrionment, then install the package with pip install.  
 These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment.
-For example, if you want to use seurat method, then you should run `conda env create -f seurat.yaml` command and activate environment.
+For example, if you want to use seurat method, then you should run command and activate environment.
 ``` shell
 conda env create -f seurat.yaml
 ```
