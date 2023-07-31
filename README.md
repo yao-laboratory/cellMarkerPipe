@@ -20,7 +20,7 @@ conda env create -f seurat.yaml
 
 ### Tutorial
 #### Input
-The neccessary input file is the counts matrix data in 10x format (`matrix.mtx.gz`, `genes.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `groups.csv` under `DATADIR`. The `group.csv` needs to contain 2 columns seperated by ",": the first one is the cell barcodes same with `barcode.tsv` and the second one is the group name. Then you can run the pipeline as example below:
+The neccessary input file is the counts matrix data in 10x format (`matrix.mtx.gz`, `genes.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by ",": the first one is the cell barcodes same with `barcodes.tsv` and the second one is the group name. Then you can run the pipeline as example below:
 
 #### Using cellMarkerPipe in command-line mode
 ##### Step 0: cellMarkerPipe Overview
