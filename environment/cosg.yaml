@@ -12,7 +12,7 @@ dependencies:
   - pip
   - pip:
     - pandas
-    
+    - scikit-learn
 ###R package###
 
 # install.packages("remotes")
