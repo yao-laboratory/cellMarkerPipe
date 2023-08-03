@@ -53,7 +53,7 @@ if(length(args) < 10){
 
 # here we use data treated with 10X, barcodes.tsv  genes.tsv  matrix.mtx
 # here the pbmc.data is a sparse matrix of saving gene*cell
-pbmc.data <- Read10X(data.dir = data.dir)
+pbmc.data <- Read10X(data.dir = data.dir, gene.column = 2, cell.column = 1, unique.features = TRUE, strip.suffix = FALSE)
 # Initialize the Seurat project object with the raw (non-normalized data).
 # here the count matrix is save as pbmc@assays$RNA@counts
 # the min # of cell and min # of features are also defined here
