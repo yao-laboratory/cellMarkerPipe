@@ -90,9 +90,9 @@ optional arguments:
 
 ```
 Here, `WORKDIR` and `DATADIR` should keep the same as `preperation` step. Then you need to choose the method you want to use. Here are the mapping between the method and its shortname:
-| Method | FindAllMarkers    | scGenefit    | SCMarker | SC3 |COMET|COSG|
+| Method | FindAllMarkers    | scGenefit    | COSG | SC3 |COMET|SCMarker|
 | :---:   | :---: | :---: |:---: |:---: |:---: |:---: |
-| Shortname | de   | scG   | SC | sc3 | Com | cos | 
+| Shortname | de   | scG   | cos | sc3 | Com | SC | 
 
 Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference.
 ##### Step 3: Evaluation
