@@ -5,8 +5,8 @@ args <- commandArgs(trailingOnly = TRUE)
 
 ## start a project dir
 work.dir = args[1]
-#data.dir = args[2]
-n.marker = args[2]
+data.dir = args[2]
+n.marker = args[3]
 
 print("The work directory is:")
 print(work.dir)
