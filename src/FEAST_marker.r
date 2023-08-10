@@ -5,7 +5,8 @@ args <- commandArgs(trailingOnly = TRUE)
 
 ## start a project dir
 work.dir = args[1]
-n.marker = args[2]
+data.dir = args[2]
+n.marker = args[3]
 
 martix.dir <- file.path(work.dir, "/data/norm_data_high_vriable.csv")
 cluster.dir <- file.path(work.dir, "cluster/tabcluster.txt")
