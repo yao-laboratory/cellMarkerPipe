@@ -158,7 +158,6 @@ def scGenefit(
     return
 
 
-
 # Comet method
 # use envrionment py36
 def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, others=""):
@@ -201,8 +200,8 @@ def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, others=""):
             )
 
     else:
-        tabmarker_file = data_dir + "/tabmarker.txt"
-        tabcluster_file = data_dir + "/tabcluster.txt"
+        tabmarker_file = data_dir + "/scale_data_high_variable.csv"
+        tabcluster_file = data_dir + "/cluster_labels.csv"
         tabvis_file = data_dir + "/tabvis.txt"
         command = (
             "Comet "
@@ -248,7 +247,7 @@ def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, others=""):
 
 
 # SCmarker method
-def SCmarker(work_dir, data_dir="", n_marker=10, k=100, n=10):
+def SCmarker(work_dir, data_dir="", k=100, n=10, n_marker=10):
 
     command = (
         "Rscript "
@@ -328,4 +327,3 @@ def high_variable(work_dir, data_dir="", n_marker=10):
     os.system(command)
 
     return
-
