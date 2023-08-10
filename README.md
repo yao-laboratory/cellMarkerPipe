@@ -90,7 +90,7 @@ optional arguments:
 
 ```
 Here, `WORKDIR` and `DATADIR` should keep the same as `preperation` step. Then you need to choose the method you want to use. Here are the mapping between the method and its shortname:
-| Method | FindAllMarkers    | scGenefit    | COSG | SC3 |COMET|SCMarker|High Vai|FEAST|
+| Method | FindAllMarkers    | scGenefit    | COSG | SC3 |COMET|SCMarker|High Variable|FEAST|
 | :---:   | :---: | :---: |:---: |:---: |:---: |:---: |:---: |:---: |
 | Shortname | de   | scG   | cos | sc3 | Com | SC | hv | fst | 
 
