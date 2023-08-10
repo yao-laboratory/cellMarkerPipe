@@ -1,0 +1,26 @@
+name: highvariable_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.9
+  - r=4.1
+  - r-seurat
+  - bioconductor-dropletutils
+  - r-devtools
+  - pip
+
+# Use the 'pip' keyword for the 'pip' section
+# and specify the packages to be installed using the '- PACKAGE_NAME' format
+# The '- PACKAGE_NAME' format should be indented with two spaces
+# If you need to specify a specific version, you can use 'PACKAGE_NAME=VERSION' format
+# For example, 'PACKAGE_NAME=1.2.3' will install version 1.2.3
+# In your case, we want to install the latest version of pandas, so we omit the version specification
+# The final 'pip' section should look like this:
+  - pip:
+    - pandas
+    - scikit-learn
+    
+# Run the R commands to install the SCMarker package
+# R -e "devtools::install_github('KChen-lab/SCMarker')"
