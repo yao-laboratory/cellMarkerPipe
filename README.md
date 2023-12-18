@@ -5,7 +5,7 @@
 ### Overview
 CellMarkerPip is a pipeline designed to include recent popular tools of identifying marker genes using scRNAseq data and evaluate the effects of selected markers. Now the tools that have been built in CellMarkerPip are:
 
-(1) FindAllMarkers by Seurat ([Paper](https://doi.org/10.1016/j.cell.2021.04.048)  
+(1) FindAllMarkers by Seurat ([Paper](https://doi.org/10.1016/j.cell.2021.04.048))  
 (2) scGenefit https://doi.org/10.1038/s41467-021-21453-4  
 (3) SCMarker https://doi.org/10.1371/journal.pcbi.1007445  
 (4) SC3 http://dx.doi.org/10.1038/nmeth.4236  
