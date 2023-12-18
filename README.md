@@ -6,17 +6,14 @@
 CellMarkerPip is a pipeline designed to include recent popular tools of identifying marker genes using scRNAseq data and evaluate the effects of selected markers. Now the tools that have been built in CellMarkerPip are:
 
 (1) FindAllMarkers by Seurat ([Paper](https://doi.org/10.1016/j.cell.2021.04.048))  
-(2) scGenefit https://doi.org/10.1038/s41467-021-21453-4  
-(3) SCMarker https://doi.org/10.1371/journal.pcbi.1007445  
-(4) SC3 http://dx.doi.org/10.1038/nmeth.4236  
-(5) COMET https://doi.org/10.15252/msb.20199005  
-(6) COSG https://doi.org/10.1093/bib/bbab579  
+(2) scGenefit ([Paper](https://doi.org/10.1038/s41467-021-21453-4))  
+(3) SCMarker ([Paper](https://doi.org/10.1371/journal.pcbi.1007445))  
+(4) SC3 ([Paper](http://dx.doi.org/10.1038/nmeth.4236))  
+(5) COMET ([Paper](https://doi.org/10.15252/msb.20199005))  
+(6) COSG ([Paper](https://doi.org/10.1093/bib/bbab579))  
 
 ### Installation
-This pipeline supports different gene-selection method writen by different language (python & R).  
-After download the package to your cluster, firstly use anaconda to set up envrionment, then install the package with pip install.  
-These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment.
-For example, if you want to use seurat method, then you should run command and activate environment.
+This pipeline supports different gene-selection method writen by different language (python & R). After download the package to your cluster, firstly use anaconda to set up envrionment, then install the package with pip install. These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment. For example, if you want to use seurat method, then you should run command and activate environment.
 ``` shell
 conda env create -f seurat.yaml
 ```
