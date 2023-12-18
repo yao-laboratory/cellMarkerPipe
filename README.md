@@ -46,7 +46,7 @@ optional arguments:
 ```
 
 ##### Step 1: Preperation
-To run `preperation` step, you can use command
+To run `preperation` step, you can use command.
 ``` bash
 python cellMarkerPipe.py preprocess -wd ./ -10xd /.../cellMarkerPipe/data/Zeisel/10x
 ```
@@ -96,7 +96,7 @@ Here, `WORKDIR` and `DATADIR` should keep the same as `preperation` step. Then y
 
 Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference.
 ##### Step 3: Evaluation
-We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. You can use command
+We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. You can use command below.
 ```bash
 python cellMarkerPipe.py evaluation -wd ./ -np 10
 ```
