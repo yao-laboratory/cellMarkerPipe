@@ -18,6 +18,14 @@ This pipeline supports different gene-selection method writen by different langu
 conda env create -f seurat.yaml
 ```
 
+If user experiences hard time in conda installation, mamba is a good subsitution.
+``` shell
+conda create -n my_env
+conda activate my_env
+conda install -c conda-forge mamba # if you haven't got mamba in your system
+mamba env update -n my_env --file seurat.yaml
+```
+The enviroment and software should be created and installed after this step.
 ### Tutorial
 #### Input
 The neccessary input file is the counts matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by `","` the first one is the cell barcodes same with `barcodes.tsv` and the second one is the cell name. Then you can run the pipeline as example below:
