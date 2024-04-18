@@ -15,7 +15,14 @@ CellMarkerPip is a pipeline designed to include recent popular tools of identify
 ### Installation
 This pipeline supports different gene-selection method writen by different language (python & R). After download the package to your cluster, firstly use anaconda to set up envrionment, then install the package with pip install. These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment. For example, if you want to use seurat method, then you should run command and activate environment.
 ``` shell
+git clone https://github.com/yao-laboratory/cellMarkerPipe.git
+cd cellMarkerPipe
+cp environment/seurat.yaml ./
 conda env create -f seurat.yaml
+```
+Then you should have a customized conda envrionment named seurat_env with cellMarkerPipe installed. To use cellMarkerPipe, you firstly need to activate this envrionment.
+``` shell
+conda activate seurat_env
 ```
 
 If user experiences hard time in conda installation, mamba is a good subsitution.
@@ -28,7 +35,9 @@ mamba env update -n my_env --file seurat.yaml
 The enviroment and software should be created and installed after this step.
 ### Tutorial
 #### Input
-The neccessary input file is the counts matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by `","` the first one is the cell barcodes same with `barcodes.tsv` and the second one is the cell name. Then you can run the pipeline as example below:
+The neccessary input file is the counts matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by `","` the first one is the cell barcodes same with `barcodes.tsv` and the second one is the cell name. An example dataset is provided in the folder `data/Zeisel/10x/` with the package.
+
+Then you can run the pipeline as example below:
 
 #### Using cellMarkerPipe in command-line mode
 ##### Step 0: cellMarkerPipe Overview
@@ -56,7 +65,7 @@ optional arguments:
 ##### Step 1: Preperation
 To run `preperation` step, you can use command.
 ``` bash
-python cellMarkerPipe.py preprocess -wd ./ -10xd /.../cellMarkerPipe/data/Zeisel/10x
+python cellMarkerPipe.py preprocess -wd ./ -10xd data/Zeisel/10x
 ```
 ```
 usage: cellMarkerPipe preprocess [-h] [-wd WORKDIR] [-10xd DATADIR] [-nvb NVARIABLE] [--cluster] [--no-cluster] [-maR MAXRNA]
@@ -78,7 +87,8 @@ optional arguments:
                         max number of MT genes for each cell
 ```
 
-Here the `WORKDIR`, `DATADIR` are requiered to be provided with an absolute path. After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated. The `stat_preprocess` include the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. The number of high variable genes you want to study with in the next step can be set up using `NVARIABLE` parameter. `--cluster` or `--no-cluster` decides whether you need the programe to do cluster process firstly, which depends on whether you provide input file of `groups.csv`.  A meta-ouput of distribution_of_features_counts.png provide you with a reference to coarsely filter genes coarsely by choosing appropriate truncate of max number of RNA for each cell (`MAXRNA`) and max number of MT genes for each cell(`MAXMT`), which are also important to keep the informative genes while clean genes and cell at the tail of the distribution to eliminating noise to the dataset. Using the example data, this step takes less than 10 seconds. 
+In the example above, the relative path is used for `WORKDIR` and `DATADIR`.  However, it is strongly suggested to provide parameters `WORKDIR`, `DATADIR` with an absolute path. After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated under the `WORKDIR`. The file `stat_preprocess` includes the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. The number of high variable genes you want to study with in the next step can be set up using `NVARIABLE` parameter. `--cluster` or `--no-cluster` decides whether you need the programe to do cluster process firstly, which depends on whether you provide input file of `groups.csv`.  A meta-ouput of distribution_of_features_counts.png provide you with a reference to coarsely filter genes coarsely by choosing appropriate truncate of max number of RNA for each cell (`MAXRNA`) and max number of MT genes for each cell(`MAXMT`), which are also important to keep the informative genes while clean genes and cell at the tail of the distribution to eliminating noise to the dataset. Using the example data, this step takes less than 10 seconds. 
+
 ##### Step 2: Select Marker Genes
 To run `selection` step, you can use command, we using method `de` in this example command.
 ``` bash
