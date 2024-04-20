@@ -24,7 +24,6 @@ Then you should have a customized conda envrionment named seurat_env with cellMa
 ``` shell
 conda activate seurat_env
 ```
-
 If user experiences hard time in conda installation, mamba is a good subsitution.
 ``` shell
 conda create -n my_env
@@ -32,7 +31,19 @@ conda activate my_env
 conda install -c conda-forge mamba # if you haven't got mamba in your system
 mamba env update -n my_env --file seurat.yaml
 ```
-The enviroment and software should be created and installed after this step.
+Under the envrionment seurat_env, you can use pip to install this package under the folder cellMarkerPipe.
+``` shell
+pip install -e .
+```
+The enviroment and software should be created and installed after this step. And you can check whether the installation is successful by running cellMarkerPipe in command line. 
+``` shell
+cellMarkerPipe --version
+```
+If the package is successfully installed, the screen will show you the version of this package as
+```
+0.0.0
+```
+
 ### Tutorial
 #### Input
 The neccessary input file is the counts matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by `","` the first one is the cell barcodes same with `barcodes.tsv` and the second one is the cell name. An example dataset is provided in the folder `data/Zeisel/10x/` with the package.
@@ -41,10 +52,12 @@ Then you can run the pipeline as example below:
 
 #### Using cellMarkerPipe in command-line mode
 ##### Step 0: cellMarkerPipe Overview
-cellMarkerPipe is able to be run in command line. This pipepline has 3 main steps: preprocess, selection and evaluation. 
+This pipepline has 3 main steps: preprocess, selection and evaluation. 
+
 ``` bash
 python cellMarkerPipe.py -h
 ```
+If the pacakge is successfully installed, you should find this output on your screen
 ```
 usage: cellMarkerPipe [-h] [--version] {preprocess,selection,evaluation} ...
 
@@ -61,7 +74,6 @@ optional arguments:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
 ```
-
 ##### Step 1: Preperation
 To run `preperation` step, you can use command.
 ``` bash
