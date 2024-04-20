@@ -35,7 +35,7 @@ Under the envrionment seurat_env, you can use pip to install this package under 
 ``` shell
 pip install -e .
 ```
-The enviroment and software should be created and installed after this step. And you can check whether the installation is successful by running cellMarkerPipe in command line. 
+The enviroment and software should be created and installed after this step. And you can check whether the installation is successful by running cellMarkerPipe in command line at any directory. 
 ``` shell
 cellMarkerPipe --version
 ```
@@ -55,7 +55,7 @@ Then you can run the pipeline as example below:
 This pipepline has 3 main steps: preprocess, selection and evaluation. 
 
 ``` bash
-python cellMarkerPipe.py -h
+cellMarkerPipe -h
 ```
 If the pacakge is successfully installed, you should find this output on your screen
 ```
@@ -77,7 +77,7 @@ optional arguments:
 ##### Step 1: Preperation
 To run `preperation` step, you can use command.
 ``` bash
-python cellMarkerPipe.py preprocess -wd ./ -10xd data/Zeisel/10x
+cellMarkerPipe preprocess -wd ./ -10xd data/Zeisel/10x
 ```
 ```
 usage: cellMarkerPipe preprocess [-h] [-wd WORKDIR] [-10xd DATADIR] [-nvb NVARIABLE] [--cluster] [--no-cluster] [-maR MAXRNA]
@@ -104,7 +104,7 @@ In the example above, the relative path is used for `WORKDIR` and `DATADIR`.  Ho
 ##### Step 2: Select Marker Genes
 To run `selection` step, you can use command, we using method `de` in this example command.
 ``` bash
-python cellMarkerPipe.py selection -wd ./ -10xd /.../cellMarkerPipe/data/Zeisel/10x -m de
+cellMarkerPipe selection -wd ./ -10xd /.../cellMarkerPipe/data/Zeisel/10x -m de
 ```
 ```
 usage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
@@ -128,7 +128,7 @@ Using the example data, this step takes about a few minutes depending on which m
 ##### Step 3: Evaluation
 We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. You can use example command below.
 ```bash
-python cellMarkerPipe.py evaluation -wd ./ -np 10
+cellMarkerPipe evaluation -wd ./ -np 10
 ```
 ```
 usage: cellMarkerPipe evaluation [-h] [-wd WORKDIR] [-np NPCA]
