@@ -75,13 +75,17 @@ optional arguments:
   --version             show program's version number and exit
 ```
 ##### Step 1: Preperation
-To run `preperation` step, you can use command.
-``` bash
-cellMarkerPipe preprocess -wd ./ -10xd data/Zeisel/10x
+For the first step `preperation`, you can check how to set up the parameters by run:
+
+``` shell
+cellMarkerPipe preprocess -h
 ```
+The parameters that you can set up are shown in output:
+
 ```
-usage: cellMarkerPipe preprocess [-h] [-wd WORKDIR] [-10xd DATADIR] [-nvb NVARIABLE] [--cluster] [--no-cluster] [-maR MAXRNA]
-                                 [-mam MAXMT]
+usage: cellMarkerPipe preprocess [-h] -wd WORKDIR -10xd DATADIR [-nvb NVARIABLE] [-maR MAXRNA] [-miR MINRNA] [-mam MAXMT]
+                                 [-np NPCA] [-res RESOLUTION] [-alg ALGORITHM] [--cluster] [--no-cluster] [--know-marker]
+                                 [--no-know-marker] [--keep-known-marker] [--no-keep-known-marker]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -91,15 +95,42 @@ optional arguments:
                         10x data directory
   -nvb NVARIABLE, --nvariable NVARIABLE
                         The number of highly variable genes selected for later selection
-  --cluster             Do cluster
-  --no-cluster          Do not do cluster
   -maR MAXRNA, --maxRNA MAXRNA
                         max number of RNA for each cell
+  -miR MINRNA, --minRNA MINRNA
+                        min number of RNA for each cell
   -mam MAXMT, --maxmt MAXMT
                         max number of MT genes for each cell
+  -np NPCA, --nPCA NPCA
+                        The number of PCA chosen for re-cluster
+  -res RESOLUTION, --resolution RESOLUTION
+                        The solution value used in FindClusters for re-cluster
+  -alg ALGORITHM, --algorithm ALGORITHM
+                        The algorithm chosen in FindClusters for re-cluster
+  --cluster             Do cluster
+  --no-cluster          Do not do cluster
+  --know-marker         Have a file named Known_marker.csv
+  --no-know-marker      Do not have a file named Known_marker.csv
+  --keep-known-marker   Keep the knwon markers during screening
+  --no-keep-known-marker
+                        Do not keep the known markers during screening
 ```
+Among these parameters, `WORKDIR` and `DATADIR` are two parameters that are necessary to be provided with the path of your directories to save output and input 10x data, seperately. Here I use the `testsuit/test` folder under the package folder `cellMarkerPipe` as the `WORKDIR` to have a testrun. There is an simple Zeisel 10x dataset provided you under the folder `data/Zeisel/10x` kept in the package folder `cellMarkerPipe` for this testrun.
 
-In the example above, the relative path is used for `WORKDIR` and `DATADIR`.  However, it is strongly suggested to provide parameters `WORKDIR`, `DATADIR` with an absolute path. After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated under the `WORKDIR`. The file `stat_preprocess` includes the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. The number of high variable genes you want to study with in the next step can be set up using `NVARIABLE` parameter. `--cluster` or `--no-cluster` decides whether you need the programe to do cluster process firstly, which depends on whether you provide input file of `groups.csv`.  A meta-ouput of distribution_of_features_counts.png provide you with a reference to coarsely filter genes coarsely by choosing appropriate truncate of max number of RNA for each cell (`MAXRNA`) and max number of MT genes for each cell(`MAXMT`), which are also important to keep the informative genes while clean genes and cell at the tail of the distribution to eliminating noise to the dataset. Using the example data, this step takes less than 10 seconds. 
+``` bash
+cd testsuit/test
+cellMarkerPipe preprocess -wd ./ -10xd ../../data/Zeisel/10x
+```
+In the example above, the relative path is used for `WORKDIR` and `DATADIR`.  However, it is strongly suggested to provide parameters `WORKDIR`, `DATADIR` with an absolute path. 
+
+After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated under the `WORKDIR`. The file `stat_preprocess` includes the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. 
+
+There are some optional parameters provided to users to customize the data screening and cluster process.  
+
+For the data screening process, A meta-ouput of distribution_of_features_counts.png provide you with a reference to coarsely filter genes coarsely by choosing appropriate truncate of max number of RNA for each cell (`MAXRNA`) and max number of MT genes for each cell(`MAXMT`), which are also important to keep the informative genes while clean genes and cell at the tail of the distribution to eliminating noise to the dataset. Using the example data, this step takes less than 10 seconds. 
+The number of high variable genes you want to study with in the next step can be set up using `NVARIABLE` parameter. 
+
+`--cluster` or `--no-cluster` decides whether you need the programe to do cluster process firstly, which depends on whether you provide input file of `groups.csv`. 
 
 ##### Step 2: Select Marker Genes
 To run `selection` step, you can use command, we using method `de` in this example command.
