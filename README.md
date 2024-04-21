@@ -170,12 +170,13 @@ cellMarkerPipe selection -wd ./ -10xd ../../data/Zeisel/10x -m de
 Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference. A standard output file `stat_selection` is provided for you under `WORKDIR` to debug.
 
 ##### Step 3: Evaluation
-We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. You can use example command below.
-```bash
-cellMarkerPipe evaluation -wd ./ -np 10
+We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. To understand the parameters, you can run
 ```
+cellMarkerPipe evaluation -h
 ```
-usage: cellMarkerPipe evaluation [-h] [-wd WORKDIR] [-np NPCA]
+Then you find all explanations of the parameters by output:
+```
+usage: cellMarkerPipe evaluation [-h] -wd WORKDIR [-np NPCA] [-res RESOLUTION] [-alg ALGORITHM]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -183,8 +184,19 @@ optional arguments:
                         Working directory
   -np NPCA, --nPCA NPCA
                         The number of PCA chosen for re-cluster
+  -res RESOLUTION, --resolution RESOLUTION
+                        The solution value used in FindClusters for re-cluster
+  -alg ALGORITHM, --algorithm ALGORITHM
+                        The algorithm chosen in FindClusters for re-cluster
 ```
-This evaluation needs to redo the cluster process using only the selected markers. So you can set up `nPCA` to optimize this cluster process. `WORKDIR` should keep the same.  Using the example data, this step takes about less than 10 seconds. After you finished this step, the calculated index can be find under folder `evaluation` with a filename `result.csv`. the program also create a `re-cluster` folder under the `WORKDIR` which is the output of the cluster process.
+Here you need to provide the code with  `WORKDIR`, which should keep the same as above steps. In the process of `evaluation`, the program will redo the cluster with only the selected marker genes from the `selection` step. As `preperation` step, you can customize the clustering by setting number of principle component used `nPCA`, `RESOLUTION` and `ALGORITHM` of FindClusters method in seurat. Then use the clustering result, the program can calculate the indexs like ARI et. al.
+
+You can use example command below.
+```bash
+cellMarkerPipe evaluation -wd ./ -np 10
+```
+
+This evaluation needs to redo the cluster process using only the selected markers. So you can set up `nPCA` to optimize this cluster process.  Using the example data, this step takes about less than 10 seconds. After you finished this step, the calculated index can be find under folder `evaluation` with a filename `result.csv`. the program also create a `re-cluster` folder under the `WORKDIR` which is the output of the cluster process.
 #### Using cellMarkerPipe as a library
 For developers, we also provide you a method to use cellMarkerPipe as a library. The way how to use it is similar to the command line mode.
 
