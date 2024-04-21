@@ -10,4 +10,4 @@ import pandas as pd
 
 #PATH_TO_SOURCE = config.PATH_TO_SOURCE
 PATH_TO_SOURCE = os.path.split(os.path.split(__file__)[0])[0]
-print(PATH_TO_SOURCE)
+#print(PATH_TO_SOURCE)

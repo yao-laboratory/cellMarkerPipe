@@ -8,6 +8,7 @@ dependencies:
   - r=4.1
   - r-seurat
   - bioconductor-dropletutils
+  - scikit-learn
   - pip
   - pip:
     - COMETSC

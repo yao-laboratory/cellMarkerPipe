@@ -13,6 +13,7 @@ from sklearn.metrics.cluster import fowlkes_mallows_score
 from sklearn.metrics import silhouette_score
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics import jaccard_score
+from sklearn.metrics import f1_score
 from sklearn import datasets
 import pandas as pd
 import numpy as np
@@ -35,9 +36,11 @@ def eval_cluster(labels_true, labels_pred):
     purity = purity_score(labels_true, labels_pred)
     nmi = normalized_mutual_info_score(labels_true, labels_pred)
     fmi = fowlkes_mallows_score(labels_true, labels_pred)
+    f1_mac = f1_score(labels_true, labels_pred, average='macro')
+    f1_mic = f1_score(labels_true, labels_pred, average='micro')
 
-    column_names = ['ari', 'jaccard', 'purity', 'nmi', 'fmi']
-    matrix = np.reshape([ari, jaccard, purity, nmi, fmi], (1,5))
+    column_names = ['ari', 'jaccard', 'purity', 'nmi', 'fmi', 'f1_macro', 'f1_micro']
+    matrix = np.reshape([ari, jaccard, purity, nmi, fmi, f1_mac, f1_mic], (1,7))
     
     res = pd.DataFrame(matrix, columns=column_names)
     return res

@@ -11,19 +11,25 @@ work.dir = args[1]
 data.dir = args[2]
 n.variable = args[3]
 n.variable = as.integer(n.variable)
-if.known.marker = args[4]
-if.known.marker = as.logical(if.known.marker)
-if.keep.known = args[5]
-if.keep.known  = as.logical(if.known.marker)
-max.RNA = args[6]
+max.RNA = args[4]
 max.RNA = as.integer(max.RNA)
-min.RNA = args[7]
+min.RNA = args[5]
 min.RNA = as.integer(min.RNA)
-max.mt = args[8]
+max.mt = args[6]
 max.mt = as.integer(max.mt)
+n.PCA = args[7]
+n.PCA = as.integer(n.PCA)
+resolution = args[8]
+resolution = as.double(resolution)
+algorithm = args[9]
+algorithm = as.integer(algorithm)
 
-if.cluster = args[9]
+if.cluster = args[10]
 if.cluster = as.logical(if.cluster)
+if.known.marker = args[11]
+if.known.marker = as.logical(if.known.marker)
+if.keep.known = args[12]
+if.keep.known  = as.logical(if.known.marker)
 
 print("The work directory is:")
 print(work.dir)
@@ -33,22 +39,28 @@ print("The number of high variable features to choose:")
 print(n.variable)
 print("Whether do cluster?")
 print(if.cluster)
-print("Whether test if the known high variable genes are all included into the high variable genes")
+print("Do you provide a Known_marker.csv file?")
 print(if.known.marker)
+print("Whether include all known marker genes in Known_marker.csv for Selection step")
+print(if.keep.known)
 print("max number of RNA is:")
 print(max.RNA)
 print("min number of RNA is:")
 print(min.RNA)
-print("max precent of MT is :")
-print(max.mt)
+print("number of principle components:")
+print(n.PCA)
+print("the resolution used for cluster is:")
+print(resolution)
+print("the algorithm used for cluster is:")
+print(algorithm)
 
 #print(args[5])
-if(length(args) < 10){
-	n.PCA = 10 }else{
-	n.PCA = as.integer(args[10])
-	print("If choose to cluster, the number of PCA is going to be used:")
-	print(n.PCA)
-}
+#if(length(args) < 10){
+#	n.PCA = 10 }else{
+#	n.PCA = as.integer(args[10])
+#	print("If choose to cluster, the number of PCA is going to be used:")
+#	print(n.PCA)
+#}
 #"/work/yaolab/yinglu/project/selection/seurat"
 
 # here we use data treated with 10X, barcodes.tsv  genes.tsv  matrix.mtx
@@ -203,7 +215,7 @@ if(if.cluster){
 # KNN graph
 
 	pbmc <- FindNeighbors(pbmc, dims = 1:n.PCA)
-	pbmc <- FindClusters(pbmc, resolution = 0.5)
+	pbmc <- FindClusters(pbmc, resolution = resolution, algorithm = algorithm)
 
 	print("Finish Cluster!!!")
 	print("Plotting Figures & save cluster result...")

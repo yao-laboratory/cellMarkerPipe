@@ -9,6 +9,7 @@ dependencies:
   - r-seurat
   - bioconductor-dropletutils
   - r-biocmanager
+  - scikit-learn
   - pip
   - pip:
     - pandas

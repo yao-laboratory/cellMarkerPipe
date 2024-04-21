@@ -11,7 +11,7 @@ code_dir = PATH_TO_SOURCE + "/" + "src/"
 
 
 # step1: preprocess
-def preprocess(data_dir, work_dir, nvariable=2000, known_marker = False, keep_marker = False, Cluster=True, nPCA=10, max_RNA=2000, min_RNA=200, max_mt=5):
+def preprocess(work_dir, data_dir, nvariable=2000, max_RNA = 2500, min_RNA = 5, max_mt = 5, nPCA=10, resolution=0.5, algorithm=1, Cluster=False, know_marker=False, keep_known=False):
 
     # preprocess
     command = (
@@ -24,19 +24,23 @@ def preprocess(data_dir, work_dir, nvariable=2000, known_marker = False, keep_ma
         + " "
         + str(nvariable)
         + " "
-        + str(known_marker)
-        + " "
-        + str(keep_marker)
-        + " "
         + str(max_RNA)
         + " "
         + str(min_RNA)
         + " "
         + str(max_mt)
         + " "
+        + str(nPCA)
+        + " "
+        + str(resolution)
+        + " "
+        + str(algorithm)
+        + " "
         + str(Cluster)
         + " "
-        + str(nPCA)
+        + str(know_marker)
+        + " "
+        + str(keep_known)
         + " > stat_preprocess"
     )
 
@@ -72,10 +76,10 @@ def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
 # step 3: Evaluation
 
 # supervised evaluation
-def evaluation(work_dir, nPCA=10, truncat_n = 0):
+def evaluation(work_dir, nPCA=10,  resolution=0.5, algorithm=1):
 
     # cluster again
-    command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(truncat_n)
+    command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(resolution) + " " + str(algorithm)
    
     os.system(command)
 

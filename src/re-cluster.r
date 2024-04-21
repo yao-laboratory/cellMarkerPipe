@@ -7,16 +7,21 @@ args <- commandArgs(trailingOnly = TRUE)
 
 ## start a project dir
 work.dir = args[1]
-#data.dir = args[2]
-
+print("The work directory is:")
 print(work.dir)
-#print(data.dir)
 
 n.PCA = strtoi(args[2])
+print("The number of principle components is:")
 print(n.PCA)
 
-#n.truncate = strtoi(args[4])
-#print(n.truncate)
+resolution = as.double(args[3])
+print("The resolution for FindClusters method is:")
+print(resolution)
+
+algorithm = strtoi(args[4])
+print("The algorithm for FindClusters metho is:")
+print(algorithm)
+
 #"/work/yaolab/yinglu/project/selection/seurat"
 
 # here we use data treated with 10X, barcodes.tsv  genes.tsv  matrix.mtx
@@ -79,7 +84,7 @@ print(markers)
 # KNN graph
 
 	pbmc <- FindNeighbors(pbmc, dims = 1:n.PCA)
-	pbmc <- FindClusters(pbmc, resolution = 0.5)
+	pbmc <- FindClusters(pbmc, resolution = resolution, algorithm = algorithm)
 # visualize cluster using UMAP
 	pbmc <- RunUMAP(pbmc, dims = 1:n.PCA)
 	plot_UMAP <- DimPlot(pbmc, reduction = "umap")

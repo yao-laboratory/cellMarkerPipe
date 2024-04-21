@@ -1,0 +1,23 @@
+{
+  "FindClusters": {
+	  "modularity.fxn" = 1,
+	  "initial.membership" = NULL,
+	  "node.sizes" = NULL,
+	  "resolution" = 0.8,
+	  "method" = "matrix",
+	  "algorithm" = 1,
+	  "n.start" = 10,
+	  "n.iter" = 10,
+	  "random.seed" = 0,
+	  "group.singletons" = TRUE,
+	  "temp.file.location" = NULL,
+	  "edge.file.name" = NULL,
+	  "verbose" = TRUE
+  },
+
+  "FindNeighbors": {
+	  //List the other parameters you want to use for function FindNeighbors: https://satijalab.org/seurat/reference/findneighbors
+	  "k.param": "25",
+	  "n.trees": "20"
+  }
+}
