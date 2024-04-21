@@ -125,18 +125,26 @@ In the example above, the relative path is used for `WORKDIR` and `DATADIR`.  Ho
 
 After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated under the `WORKDIR`. The file `stat_preprocess` includes the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. 
 
-There are some optional parameters provided to users to customize the data screening and cluster process.  
+There are some optional parameters provided to users to customize the data screening and cluster process, where we followed the tutorial of Seurat (https://satijalab.org/seurat/articles/pbmc3k_tutorial) to conduct:
+1. coarsely filter cells that have unique feature counts over `MAXRNA` or less than `MINRNA`. We filter cells that have >`MAXMT` mitochondrial counts. A meta-ouput of distribution_of_features_counts.png provide you with a reference to choose appropriate values for your dataset.
+2. data normalization,
+3. identify high-variable genes, and only use top `NVARIABLE` genes for following calculation
+4. scale data
+5. reduce dimenion with PCA techinique. `NPCA` principle components are used for following cluster
+6. apply a graph-based clustering approach. You can customize the parameters `RESOLUTION` and `ALGORITHM` of Seurat method FindClusters used.
 
-For the data screening process, A meta-ouput of distribution_of_features_counts.png provide you with a reference to coarsely filter genes coarsely by choosing appropriate truncate of max number of RNA for each cell (`MAXRNA`) and max number of MT genes for each cell(`MAXMT`), which are also important to keep the informative genes while clean genes and cell at the tail of the distribution to eliminating noise to the dataset. Using the example data, this step takes less than 10 seconds. 
-The number of high variable genes you want to study with in the next step can be set up using `NVARIABLE` parameter. 
+In above process, step 5&6 are not neccessary to do if you already annote cluster labels to each cell. Then you need to prepare the file `groups.csv` which contains 2 columns seperated by `","` the first one is the cell barcodes same with `barcodes.tsv` and the second one is the cell name. We use `--cluster` or `--no-cluster` to switch whether cellMarkerPipe finds clusters for you. By default, the program does not find clusters automatically.
 
-`--cluster` or `--no-cluster` decides whether you need the programe to do cluster process firstly, which depends on whether you provide input file of `groups.csv`. 
+In our paper, we want to compare the selected marker genes with well-known marker genes. So we also provide the users a choice whether keep all well-known marker genes in case they are not top high variable genes and filtered by the pipeline. To keep all well-known genes, you need to provide a file named as 'Known_marker.csv' under the `DATADIR` and list the well-known genes for each cluster in each row. The 1st column is the cluster label, which can be anything and will be neglected later. By default, the pipeline will not keep the well-known genes, you need to mannually adding parameter --know-marker and --keep-known-marker to keep them for the next Selection step.
 
 ##### Step 2: Select Marker Genes
-To run `selection` step, you can use command, we using method `de` in this example command.
-``` bash
-cellMarkerPipe selection -wd ./ -10xd /.../cellMarkerPipe/data/Zeisel/10x -m de
+To run `selection` step, you can check how to set up the parameter by run,
+
+``` shell
+cellMarkerPipe selection -h
 ```
+Then you should see all parameters that you can set up from the output:
+
 ```
 usage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
 
@@ -155,7 +163,12 @@ Here, `WORKDIR` and `DATADIR` should keep the same as `preperation` step. Then y
 | :---:   | :---: | :---: |:---: |:---: |:---: |:---: |:---: |:---: |
 | Shortname | de   | scG   | cos | sc3 | Com | SC | hv | fst | 
 
-Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference.
+For example, we using method `de` (FindAllMarkers in Seurat) in this example command.
+``` bash
+cellMarkerPipe selection -wd ./ -10xd ../../data/Zeisel/10x -m de
+```
+Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference. A standard output file `stat_selection` is provided for you under `WORKDIR` to debug.
+
 ##### Step 3: Evaluation
 We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. You can use example command below.
 ```bash
