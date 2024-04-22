@@ -229,3 +229,32 @@ block.evaluation(work_dir, nPCA=10)
 ```
 `nPCA` is the same parameter as `NPCA` in command line
 The above steps have been included into the test file under folder 'notebook'. The test data are under folder 'data'.
+
+#### Integrate a new tool into the pipeline.
+Developers are welcome to integrate the gene selection codes writen in Python or R into this pipeline. To achieve that, 
+
+Here are the procedures to help you achieve that.
+##### Step 1: prepare a Python/R script to include the gene selection codes
+###### Example header and tail for Python
+
+###### Example header and tail for R
+
+##### Step 2: Add the name of the srcipt into the list
+```
+def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
+
+    # map the inputs to the function blocks
+    options = {
+        "de": diff_express,  # by group
+        "scG": scGenefit,  # not by group
+        "Com": Comet,  # by group, by neighbouring number
+        "SC": SCmarker,  # not by group
+        "cos": COSGmarker,  # by group
+        "fst": FEASTmarker,  # not by group
+        "sc3": SC3_diff, # by group
+        "hv": high_variable # by group
+    }
+
+    options[method](work_dir=work_dir, data_dir=data_dir, n_marker=n_marker,  **kwarg)
+    return
+```
