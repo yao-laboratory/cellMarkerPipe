@@ -240,6 +240,7 @@ Here are the procedures to help you achieve that.
 ###### Example header and tail for R
 
 ##### Step 2: Add the name of the srcipt into the list
+In the file `cellMarkerPipe/pipeline/block.py` you can find the `selection` method. You need to add your own script's name into the dictionary using abbreviation as the key and the name fo the python/R script as the value.
 ```
 def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
 
@@ -252,7 +253,8 @@ def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
         "cos": COSGmarker,  # by group
         "fst": FEASTmarker,  # not by group
         "sc3": SC3_diff, # by group
-        "hv": high_variable # by group
+        "hv": high_variable, # by group
+        "abbreviation"： YOUR_METHOD # your own python/R script name
     }
 
     options[method](work_dir=work_dir, data_dir=data_dir, n_marker=n_marker,  **kwarg)
