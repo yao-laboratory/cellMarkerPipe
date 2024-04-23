@@ -237,7 +237,63 @@ Here are the procedures to help you achieve that.
 ##### Step 1: prepare a Python/R script to include the gene selection codes
 ###### Example header and tail for Python
 
-###### Example header and tail for R
+###### Example input and out for R: YOUR_METHOD.R
+``` R
+# import libarary
+library(ANY_LIBRARY_YOU_NEED)
+
+########################### input #############################################################################
+# The standard selection method requires the script must accept 3 arguments:
+# work.dir: the work directory
+# data.dir: the data directory saved original 10x data
+# n.marker: the number of marker genes selected for each group
+
+args <- commandArgs(trailingOnly = TRUE)
+
+## start a project dir
+work.dir = args[1]
+data.dir = args[2]
+n.marker = args[3]
+
+print("The work directory is:")
+print(work.dir)
+
+#print("The original 10x count data is at:")
+#print(data.dir)
+
+print("The number of marker chosen for each group:")
+n.marker <- as.integer(n.marker)
+print(n.marker)
+
+# read gene*cell matrix
+# it is recommended to import 10x data because the size is small, so the import process takes little time
+# Actually, there are normalized and scaled matrix provided in work.dir/data/ as the meta-data file
+# You can also import those files if you have a small dataset.
+data.dir <- file.path(work.dir, "/data/10x")
+pbmc.data <- Read10X(data.dir = data.dir)
+
+# read group lables for each cell
+cluster.dir <- file.path(work.dir, "data/cluster_labels.csv")
+cluster <- read.table(
+  file = cluster.dir,
+    sep="\t",
+  as.is = TRUE
+)
+
+###############################################################################################################
+
+########################### body ##############################################################################
+# Here you customize the file by add the code neccesary to deal with the matrix and group labels to select
+# marker genes. Finally, you should provide a dataframe marker.per.group to save the marker genes for each group
+marker.per.group <- data.frame(Cluster=character(0), Marker=character(0))
+
+###############################################################################################################
+
+########################### output ############################################################################
+# Save results
+write.csv(marker.per.group, file.path(marker.dir, "marker_gene_per_group.csv"),row.names = FALSE)
+###############################################################################################################
+```
 
 ##### Step 2: Add the name of the srcipt into the list
 In the file `cellMarkerPipe/pipeline/block.py` you can find the `selection` method. You need to add your own script's name into the dictionary using abbreviation as the key and the name fo the python/R script as the value.
