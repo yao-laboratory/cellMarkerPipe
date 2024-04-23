@@ -235,9 +235,63 @@ Developers are welcome to integrate the gene selection codes writen in Python or
 
 Here are the procedures to help you achieve that.
 ##### Step 1: prepare a Python/R script to include the gene selection codes
-###### Example header and tail for Python
+###### Example standard input and output for Python: YOUR_METHOD.py
+``` Python
+# import libarary
+import ANY_LIBRARY_YOU_NEED
+########################### input #############################################################################
+# The standard selection method requires the script must accept 3 arguments:
+# work_dir: the work directory
+# data_dir: the data directory saved original 10x data
+# n_marker: the number of marker genes selected for each group
 
-###### Example input and out for R: YOUR_METHOD.R
+# input variables
+work_dir = sys.argv[1]
+print("Work directory is:")
+print(work_dir)
+
+data_dir = sys.argv[2]
+print("The data directory is:")
+print(data_dir)
+
+n_marker = sys.argv[3]
+n_marker = int(n_marker)
+print("The number of markers is:")
+print(n_marker)
+
+# read gene*cell matrix into a sc.adata object
+# it is recommended to import 10x data because the size is small, so the import process takes little time
+# Actually, there are normalized and scaled matrix provided in work.dir/data/ as the meta-data file
+# You can also import those files if you have a small dataset.
+
+data_path=work_dir + "/data/10x"
+    adata = sc.read_10x_mtx(
+    data_path,  # the directory with the `.mtx` file
+    var_names='gene_symbols',                # use gene symbols for the variable names (variables-axis index)
+    cache=False)
+genes = adata.var_names
+
+# import cluster lable file
+cluster_dir = work_dir + "/data/cluster_labels.csv"
+clusters = pd.read_csv(tabcluster_file, sep = '\t', header=None)
+clusters_np = clusters.iloc[:,1].values
+Y_t, indices = np.unique(clusters_np, return_inverse=True)
+
+#############################################################################################################
+############################### body ########################################################################
+# Here you customize the file by add the code neccesary to deal with the matrix and group labels to select
+# marker genes. Finally, you should provide a dataframe marker_per_group to save the marker genes for each group
+marker_per_group = pd.DataFrame(index=Y_t, columns=["Marker"])
+marker_per_group.index.name = "Cluster"
+############################################################################################################
+############################### output #####################################################################
+select_dir = work_dir + "/marker"
+result_per_group_dir = select_dir + "/marker_gene_per_group.csv"
+marker_per_group.to_csv(result_per_group_dir, header = True, sep=',')
+############################################################################################################
+```
+
+###### Example standard input and output for R: YOUR_METHOD.R
 ``` R
 # import libarary
 library(ANY_LIBRARY_YOU_NEED)
