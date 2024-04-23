@@ -237,6 +237,9 @@ Here are the procedures to help you achieve that.
 ##### Step 1: prepare a Python/R script to include the gene selection codes
 ###### Example standard input and output for Python: YOUR_METHOD.py
 ``` Python
+#!/usr/bin/env python
+# coding: utf-8
+
 # import libarary
 import ANY_LIBRARY_YOU_NEED
 ########################### input #############################################################################
@@ -345,6 +348,10 @@ marker.per.group <- data.frame(Cluster=character(0), Marker=character(0))
 
 ########################### output ############################################################################
 # Save results
+marker.dir <- file.path(work.dir, "marker")
+if (!file.exists(marker.dir)) {
+dir.create(marker.dir)
+}
 write.csv(marker.per.group, file.path(marker.dir, "marker_gene_per_group.csv"),row.names = FALSE)
 ###############################################################################################################
 ```
