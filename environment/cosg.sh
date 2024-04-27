@@ -1,16 +1,6 @@
 #!/bin/bash
 
-conda create -n gene_select python=3.9
-conda install -c conda-forge r=4.1 -n gene_select
-conda install -c conda-forge r-seurat -n gene_select
-conda install -c bioconda bioconductor-dropletutils -n gene_select
-
-conda activate gene_select
+cp environment/cosg.yaml ./
+conda env create -f cosg.yaml
+conda activate COSGR_env
 pip install -e .
-
-############# Then install R package
-# R'''
-#install.packages("remotes") 
-#remotes::install_github("genecell/COSGR") 
-
-#'''R

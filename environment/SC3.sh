@@ -1,17 +1,6 @@
 #!/bin/bash
 
-conda create -n gene_select python=3.9
-conda install -c conda-forge r=4.1 -n gene_select
-conda install -c conda-forge r-seurat -n gene_select
-conda install -c bioconda bioconductor-dropletutils -n gene_select
-
-conda activate gene_select
+cp environment/SC3.yaml ./
+conda env create -f SC3.yaml
+conda activate sc3_env
 pip install -e .
-
-############# Then install R package
-# R'''
-#if (!require("BiocManager", quietly = TRUE))
-#    install.packages("BiocManager")
-
-#BiocManager::install("SC3")
-#'''R
