@@ -76,15 +76,15 @@ def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
 # step 3: Evaluation
 
 # supervised evaluation
-def evaluation(work_dir, nPCA=10,  resolution=0.5, algorithm=1):
+def evaluation(work_dir, nPCA=10,  resolution=0.5, algorithm=1, know_marker=False, data_dir=""):
 
     # cluster again
-    command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(resolution) + " " + str(algorithm)
+    #command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(resolution) + " " + str(algorithm)
    
-    os.system(command)
+    #os.system(command)
 
     # compare y_predict with y_true
-    command = "python " + code_dir + "evaluation.py " + work_dir + " > stat_evaluation"
+    command = "python " + code_dir + "evaluation.py " + work_dir + " " + str(know_marker) + " " + data_dir + " > stat_evaluation"
 
     
     os.system(command)

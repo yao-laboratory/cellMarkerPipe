@@ -1,0 +1,2 @@
+[console_scripts]
+cellMarkerPipe = pipeline.cellMarkerPipe:main
