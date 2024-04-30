@@ -12,7 +12,7 @@ dependencies:
   - r-remotes
   - pip
   - pip:
-    - pandas
+    - pandas=1.5
     - scikit-learn
 ###R package###
 

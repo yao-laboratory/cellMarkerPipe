@@ -20,7 +20,7 @@ dependencies:
 # In your case, we want to install the latest version of pandas, so we omit the version specification
 # The final 'pip' section should look like this:
   - pip:
-    - pandas
+    - pandas=1.5
     
 # Run the R commands to install the SCMarker package
 # R -e "devtools::install_github('KChen-lab/SCMarker')"

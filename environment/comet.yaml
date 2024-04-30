@@ -5,6 +5,7 @@ channels:
   - defaults
 dependencies:
   - python=3.6
+  - pandas=1.5
   - r=4.1
   - r-seurat
   - bioconductor-dropletutils
