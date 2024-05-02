@@ -18,14 +18,14 @@ work_dir = sys.argv[1]
 print("Work directory is:")
 print(work_dir)
 
-input_format = sys.argv[2]
-print("The input format is:")
-print(input_format)
-
-n_marker = sys.argv[3]
+n_marker = sys.argv[2]
 n_marker = int(n_marker)
 print("The number of markers is:")
 print(n_marker)
+
+input_format = sys.argv[3]
+print("The input format is:")
+print(input_format)
 
 epsilon = sys.argv[4]
 epsilon = float(epsilon)

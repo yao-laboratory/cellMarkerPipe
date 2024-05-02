@@ -54,7 +54,7 @@ def preprocess(work_dir, data_dir, nvariable=2000, max_RNA = 2500, min_RNA = 5, 
 # step 2: Selection
 
 
-def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
+def selection(work_dir, method="de", n_marker=10,  **kwarg):
 
     # map the inputs to the function blocks
     options = {
@@ -68,7 +68,7 @@ def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
         "hv": high_variable # by group
     }
 
-    options[method](work_dir=work_dir, data_dir=data_dir, n_marker=n_marker,  **kwarg)
+    options[method](work_dir=work_dir, n_marker=n_marker,  **kwarg)
     return
 
 
@@ -79,9 +79,9 @@ def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
 def evaluation(work_dir, nPCA=10,  resolution=0.5, algorithm=1, know_marker=False, data_dir=""):
 
     # cluster again
-    #command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(resolution) + " " + str(algorithm)
+    command = "Rscript " + code_dir + "re-cluster.r " + work_dir  + " " + str(nPCA) + " " + str(resolution) + " " + str(algorithm)
    
-    #os.system(command)
+    os.system(command)
 
     # compare y_predict with y_true
     command = "python " + code_dir + "evaluation.py " + work_dir + " " + str(know_marker) + " " + data_dir + " > stat_evaluation"
@@ -94,7 +94,7 @@ def evaluation(work_dir, nPCA=10,  resolution=0.5, algorithm=1, know_marker=Fals
 
 
 # seurat differential analyses method
-def diff_express(work_dir, data_dir="", n_marker=10):
+def diff_express(work_dir, n_marker=10):
     # n is the number of marker for each cluster
 
     command = (
@@ -149,9 +149,9 @@ def scGenefit(
         + "/scGfit.py "
         + work_dir
         + " "
-        + input_format
-        + " "
         + str(n_marker)
+        + " "
+        + input_format
         + " "
         + str(epsilon)
         + " > stat_selection"
@@ -164,7 +164,7 @@ def scGenefit(
 
 # Comet method
 # use envrionment py36
-def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, others=""):
+def Comet(work_dir, n_marker=10, data_dir="", vis=False, if_pair=1, others=""):
     # data_dir is the directory that users have their own 3 files "tabcluster.txt  tabmarker.txt  tabvis.txt"
     # otherwise, the user needs cluster first, and the input files will be prduced by the last "preprocess" step
     # vis: wehter visulize with Comet, if vis==True, then need to provide a tabvis.txt file under data_dir, or work_dir/cluster
@@ -251,7 +251,7 @@ def Comet(work_dir, data_dir="", n_marker=10, vis=False, if_pair=1, others=""):
 
 
 # SCmarker method
-def SCmarker(work_dir, data_dir="", k=100, n=10, n_marker=10):
+def SCmarker(work_dir, k=100, n=10, n_marker=10):
 
     command = (
         "Rscript "
@@ -259,13 +259,11 @@ def SCmarker(work_dir, data_dir="", k=100, n=10, n_marker=10):
         + "scmarker.r "
         + work_dir
         + " "
-        + data_dir
+        + str(n_marker)
         + " "
         + str(k)
         + " "
         + str(n)
-        + " "
-        + str(n_marker)
         + " > stat_selection"
     )
 
@@ -275,7 +273,7 @@ def SCmarker(work_dir, data_dir="", k=100, n=10, n_marker=10):
 
 
 # COSG method
-def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1):
+def COSGmarker(work_dir, n_marker=10, mu=1):
     # n is the number of marker for each cluster
 
     command = (
@@ -295,7 +293,7 @@ def COSGmarker(work_dir, data_dir="",n_marker=10, mu=1):
     return
 
 # FEAST method
-def FEASTmarker(work_dir,data_dir="", n_marker=10):
+def FEASTmarker(work_dir, n_marker=10):
     # n is the number of marker for each cluster
 
     command = (
@@ -314,15 +312,13 @@ def FEASTmarker(work_dir,data_dir="", n_marker=10):
 
 
 # high vaiable genes method
-def high_variable(work_dir, data_dir="", n_marker=10):
+def high_variable(work_dir, n_marker=10):
 
     command = (
         "Rscript "
         + code_dir
         + "high_variable.r "
         + work_dir
-        + " "
-        + data_dir
         + " "
         + str(n_marker)
         + " > stat_selection"

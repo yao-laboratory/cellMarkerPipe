@@ -5,10 +5,9 @@ args <- commandArgs(trailingOnly = TRUE)
 
 ## start a project dir
 work.dir = args[1]
-data.dir = args[2]
+n.marker = args[2]
 kval = args[3]
 nval = args[4]
-n.marker = args[5]
 
 print("For nearest neighbour algorithm, the used k & n values are:")
 print(paste(kval, nval))

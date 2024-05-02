@@ -35,8 +35,10 @@ cluster <- read.table(
 print("Selecting markers...")
 
 start_time <- Sys.time()
-d <- get_marker_genes(as.matrix(pbmc_raw),  as.factor(cluster[,2]))
 group_name <- unique(cluster[,2])
+mapped_values <- as.numeric(factor(cluster[,2], levels = group_name))
+
+d <- get_marker_genes(as.matrix(pbmc_raw),  mapped_values)
 head(d)
 rownames(d) <- rownames(pbmc_raw)
 ########################################################################################

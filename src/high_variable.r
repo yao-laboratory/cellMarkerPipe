@@ -5,14 +5,10 @@ args <- commandArgs(trailingOnly = TRUE)
 
 ## start a project dir
 work.dir = args[1]
-data.dir = args[2]
-n.marker = args[3]
+n.marker = args[2]
 
 print("The work directory is:")
 print(work.dir)
-
-#print("The original 10x count data is at:")
-#print(data.dir)
 
 print("The number of marker chosen for each group:")
 n.marker <- as.integer(n.marker)

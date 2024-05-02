@@ -35,8 +35,8 @@ def main():
     
     parser_b = subparsers.add_parser('selection', help='Select marker genes')
     parser_b.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir",required=True)
-    parser_b.add_argument('-10xd','--10xdir', type=str, help='10x data directory',dest="datadir",required=True)
     parser_b.add_argument('-m','--method', type=str, help='Method used for selection',dest="method",required=True)
+    parser_b.add_argument('-n','--n-marker', type=str, help='Number of marker genes to select',dest="nmarker", default=10)
 
     parser_c = subparsers.add_parser('evaluation', help='Evaluate selected marker genes')
     parser_c.add_argument('-wd', '--workdir', type=str, help='Working directory',dest="workdir",required=True)
@@ -62,7 +62,7 @@ def main():
     
     elif args.command == "selection":
         print("Command: select the marker genes...")
-        block.selection(work_dir=args.workdir, data_dir =args.datadir, method=args.method)
+        block.selection(work_dir=args.workdir, method=args.method, n_marker=args.nmarker)
 
     elif args.command == "evaluation":
         print("Command: evaluate the selected marker genes...")
