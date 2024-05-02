@@ -40,12 +40,6 @@ conda activate my_env
 conda install -c conda-forge mamba # if you haven't got mamba in your system
 mamba env update -n my_env --file seurat.yaml
 ```
-Except the the dependencies included in the .yaml files, some core packages of the method has to be installed from other resources rather than conda/pip. For example, COSGR is install from github:
-
-```shell
-Rscript -e "if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')"
-Rscript -e "remotes::install_github('genecell/COSGR')"
-```
 As for what packages are required excpet the ones listed in .yaml file, please check the .sh files corresponding to each method under the envrionment folder.
 
 Under the envrionment seurat_env, you can use pip to install this package under the folder cellMarkerPipe.
