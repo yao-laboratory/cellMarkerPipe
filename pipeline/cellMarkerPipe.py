@@ -45,7 +45,7 @@ def main():
     parser_c.add_argument('-alg', '--algorithm', type=int, default=1, help='The algorithm chosen in FindClusters for re-cluster',dest="algorithm")
     parser_c.add_argument('--know-marker', dest='know', action='store_true', help="Have a file named Known_marker.csv")
     parser_c.set_defaults(keep=False)
-    parser_c.add_argument('-10xd','--10xdir', type=str, help='10x data directory',dest="datadir",required=True)
+    parser_c.add_argument('-10xd','--10xdir', type=str,default="", help='10x data directory',dest="datadir",required=False)
     
 
 
