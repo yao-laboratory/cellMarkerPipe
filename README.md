@@ -391,8 +391,6 @@ def YOUR_METHOD(work_dir, n_marker=10):
         + work_dir
         + " "
         + str(n_marker)
-        + " "
-        + str(mu)
         + " > stat_selection"
     )
     os.system(command)
