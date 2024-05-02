@@ -33,7 +33,7 @@ print(work_dir)
 know_marker = sys.argv[2]
 print("Do you have a file stored known marker genes:")
 print(know_marker)
-if know_marker:
+if know_marker == "True":
     data_dir = sys.argv[3]
     print("Where the Known_marker.csv saved?")
     print(data_dir)
@@ -70,9 +70,9 @@ eval_result
 print(eval_result)
 
 if know_marker == "True":
+    Known_marker_dir = data_dir + "/Known_marker.csv"
     # import markers genes of well known
     colnames = ["Cluster", "Markers"]
-    Known_marker_dir = data_dir + "/Known_marker.csv"
     Know_marker_genes = pd.read_csv(Known_marker_dir, header= None, sep=",", names=colnames)
     dfk = Know_marker_genes.transpose()
     cdfk = dfk.rename(columns=dfk.loc["Cluster"].astype(str))

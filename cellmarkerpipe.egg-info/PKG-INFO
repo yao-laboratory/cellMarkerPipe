@@ -21,10 +21,19 @@ CellMarkerPip is a pipeline designed to include recent popular tools of identify
 (6) COSG ([Paper](https://doi.org/10.1093/bib/bbab579))  
 
 ### Installation
-This pipeline supports different gene-selection method writen by different language (python & R). After download the package to your cluster, firstly use anaconda to set up envrionment, then install the package with pip install. These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment. For example, if you want to use seurat method, then you should run command and activate environment.
-``` shell
+This pipeline supports different gene-selection methods writen by different language (python & R). You candownload the package from github, 
+```shell
 git clone https://github.com/yao-laboratory/cellMarkerPipe.git
-cd cellMarkerPipe
+```
+After you get the package, you can directly go to the folder of cellMarkerPipe/environment to use the `Method.sh` file to install the method you want to use. For example, if you want to use the FindAllMarkers method embeded in the seurat, you should use `seurat.sh` to set the envrionment and install all nessesary dependencies
+
+```shell
+cd cellMarkerPipe/environment
+bash seurat.sh
+```
+
+In the `seurat.sh` file, firstly anaconda is used to set up envrionment, then the package are installed with pip. These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment. For example, if you want to use seurat method, then you should run command and activate environment.
+``` shell
 cp environment/seurat.yaml ./
 conda env create -f seurat.yaml
 ```
@@ -39,6 +48,8 @@ conda activate my_env
 conda install -c conda-forge mamba # if you haven't got mamba in your system
 mamba env update -n my_env --file seurat.yaml
 ```
+As for what packages are required excpet the ones listed in .yaml file, please check the .sh files corresponding to each method under the envrionment folder.
+
 Under the envrionment seurat_env, you can use pip to install this package under the folder cellMarkerPipe.
 ``` shell
 pip install -e .
@@ -154,26 +165,26 @@ cellMarkerPipe selection -h
 Then you should see all parameters that you can set up from the output:
 
 ```
-usage: cellMarkerPipe selection [-h] [-wd WORKDIR] [-10xd DATADIR] [-m METHOD]
-
+usage: cellMarkerPipe selection [-h] -wd WORKDIR -m METHOD [-n NMARKER]
 optional arguments:
   -h, --help            show this help message and exit
   -wd WORKDIR, --workdir WORKDIR
                         Working directory
-  -10xd DATADIR, --10xdir DATADIR
-                        10x data directory
   -m METHOD, --method METHOD
                         Method used for selection
-
+  -n NMARKER, --n-marker NMARKER
+                        Number of marker genes to select
 ```
-Here, `WORKDIR` and `DATADIR` should keep the same as `preperation` step. Then you need to choose the method you want to use. Here are the mapping between the method and its shortname:
+Here, `WORKDIR` should keep the same as `preperation` step. Then you need to choose the `METHOD` you want to use. Here are the mapping between the method and its shortname:
 | Method | FindAllMarkers    | scGenefit    | COSG | SC3 |COMET|SCMarker|High Variable|FEAST|
 | :---:   | :---: | :---: |:---: |:---: |:---: |:---: |:---: |:---: |
-| Shortname | de   | scG   | cos | sc3 | Com | SC | hv | fst | 
+| Shortname | de   | scG   | cos | sc3 | Com | SC | hv | fst |
+
+Another parameter `NMARKER` decides the number of marker genes assigned to each cluster. The default value is 10. 
 
 For example, we using method `de` (FindAllMarkers in Seurat) in this example command.
 ``` bash
-cellMarkerPipe selection -wd ./ -10xd ../../data/Zeisel/10x -m de
+cellMarkerPipe selection -wd ./ -m de
 ```
 Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference. A standard output file `stat_selection` is provided for you under `WORKDIR` to debug.
 
@@ -228,7 +239,7 @@ Here `navriable`, `max_RNA` and `max_mt` are the same parameters corresponding t
 
 ##### Step 2: Select Marker Genes
 ``` python
-block.selection(work_dir=work_dir, data_dir ="", method="de")
+block.selection(work_dir=work_dir, method="de")
 ```
 Here `method` is the same parameter as `METHOD` in command line 
 ##### Step 3: Evaluation
@@ -253,7 +264,6 @@ import ANY_LIBRARY_YOU_NEED
 ########################### input #############################################################################
 # The standard selection method requires the script must accept 3 arguments:
 # work_dir: the work directory
-# data_dir: the data directory saved original 10x data
 # n_marker: the number of marker genes selected for each group
 
 # input variables
@@ -261,11 +271,7 @@ work_dir = sys.argv[1]
 print("Work directory is:")
 print(work_dir)
 
-data_dir = sys.argv[2]
-print("The data directory is:")
-print(data_dir)
-
-n_marker = sys.argv[3]
+n_marker = sys.argv[2]
 n_marker = int(n_marker)
 print("The number of markers is:")
 print(n_marker)
@@ -310,21 +316,16 @@ library(ANY_LIBRARY_YOU_NEED)
 ########################### input #############################################################################
 # The standard selection method requires the script must accept 3 arguments:
 # work.dir: the work directory
-# data.dir: the data directory saved original 10x data
 # n.marker: the number of marker genes selected for each group
 
 args <- commandArgs(trailingOnly = TRUE)
 
 ## start a project dir
 work.dir = args[1]
-data.dir = args[2]
-n.marker = args[3]
+n.marker = args[2]
 
 print("The work directory is:")
 print(work.dir)
-
-#print("The original 10x count data is at:")
-#print(data.dir)
 
 print("The number of marker chosen for each group:")
 n.marker <- as.integer(n.marker)
@@ -367,7 +368,7 @@ write.csv(marker.per.group, file.path(marker.dir, "marker_gene_per_group.csv"),r
 ##### Step 2: Add the name of the srcipt into the list
 In the file `cellMarkerPipe/pipeline/block.py` you can find the `selection` method. You need to add your own script's name into the dictionary using abbreviation as the key and the name fo the python/R script as the value.
 ```
-def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
+def selection(work_dir, method="de", n_marker=10,  **kwarg):
 
     # map the inputs to the function blocks
     options = {
@@ -382,6 +383,24 @@ def selection(work_dir, data_dir="", method="de", n_marker=10,  **kwarg):
         "abbreviation"： YOUR_METHOD # your own python/R script name
     }
 
-    options[method](work_dir=work_dir, data_dir=data_dir, n_marker=n_marker,  **kwarg)
+    options[method](work_dir=work_dir,  n_marker=n_marker,  **kwarg)
     return
+```
+##### Step 3: write a function named YOUR_METHOD in block.py
+Then you need to write a function named method to transfer parameters required by `YOUR_METHOD.R/YOUR_METHOD.py` in `block.py`. Here is an example:
+```python
+# YOUR_METHOD
+def YOUR_METHOD(work_dir, n_marker=10):
+    # n is the number of marker for each cluster
+    command = (
+        "Rscript "
+        + code_dir
+        + "YOUR_METHOD.r "
+        + work_dir
+        + " "
+        + str(n_marker)
+        + " > stat_selection"
+    )
+    os.system(command)
+    return 
 ```
