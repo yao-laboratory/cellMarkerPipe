@@ -1,6 +1,16 @@
 #!/bin/bash
 
-cp environment/SCMarker.yaml ./
+# cp environment/SCMarker.yaml ./
+# conda env create -f SCMarker.yaml
+# conda activate SCMarker_env
+# pip install -e .
+
+cp SCMarker.yaml ../
+cd ..
 conda env create -f SCMarker.yaml
-conda activate SCMarker_env
+source activate SCMarker_env
+
+# Run the R commands to install the SCMarker package
+R -e "devtools::install_github('KChen-lab/SCMarker')"
+
 pip install -e .
