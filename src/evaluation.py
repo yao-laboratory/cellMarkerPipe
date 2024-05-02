@@ -69,7 +69,7 @@ eval_result = eval_cluster(indices, Y_pred)
 eval_result
 print(eval_result)
 
-if know_marker:
+if know_marker == "True":
     # import markers genes of well known
     colnames = ["Cluster", "Markers"]
     Known_marker_dir = data_dir + "/Known_marker.csv"
