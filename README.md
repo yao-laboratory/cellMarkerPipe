@@ -20,7 +20,7 @@ git clone https://github.com/yao-laboratory/cellMarkerPipe.git
 After you get the package, you can directly go to the folder of cellMarkerPipe/environment to use the `Method.sh` file to install the method you want to use. For example, if you want to use the FindAllMarkers method embeded in the seurat, you should use `seurat.sh` to set the envrionment and install all nessesary dependencies
 
 ```shell
-cd cellMarkerPipe/envrionment
+cd cellMarkerPipe/environment
 bash seurat.sh
 ```
 
