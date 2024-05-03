@@ -12,7 +12,7 @@ dependencies:
   - scikit-learn
   - pip
   - pip:
-   - pandas=1.5
+    - pandas==1.5
 
 # Run the R commands to install the SCMarker package
 # R -e "devtools::install_github('KChen-lab/SCMarker')"
