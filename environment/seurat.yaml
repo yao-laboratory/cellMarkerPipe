@@ -7,7 +7,7 @@ dependencies:
   - pip
   - scikit-learn
   - pip:
-    - pandas=1.5
+    - pandas==1.5
   - r-dplyr
   - r-seurat
   - r-biocmanager
