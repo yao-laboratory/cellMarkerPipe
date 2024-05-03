@@ -20,8 +20,7 @@ git clone https://github.com/yao-laboratory/cellMarkerPipe.git
 After you get the package, you can directly go to the folder of cellMarkerPipe/environment to use the `Method.sh` file to install the method you want to use. For example, if you want to use the FindAllMarkers method embeded in the seurat, you should use `seurat.sh` to set the envrionment and install all nessesary dependencies
 
 ```shell
-cd cellMarkerPipe/environment
-bash seurat.sh
+sbatch environment/seurat.sh
 ```
 
 In the `seurat.sh` file, firstly anaconda is used to set up envrionment, then the package are installed with pip. These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment. For example, if you want to use seurat method, then you should run command and activate environment.
