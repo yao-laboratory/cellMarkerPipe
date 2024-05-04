@@ -2,8 +2,8 @@
 
 <img src="./cellMarkerPipe.png" width="200" height="250"/>
 
-### Overview
-CellMarkerPip is a pipeline designed to include recent popular tools of identifying marker genes using scRNAseq data and evaluate the effects of selected markers. Now the tools that have been built in CellMarkerPip are:
+## 1. Overview
+CellMarkerPip is a pipeline designed to include recent popular tools of identifying marker genes using scRNAseq data and evaluate the effects of selected markers. Now the tools that have been tested and included in CellMarkerPip are:
 
 (1) FindAllMarkers by Seurat ([Paper](https://doi.org/10.1016/j.cell.2021.04.048))  
 (2) scGenefit ([Paper](https://doi.org/10.1038/s41467-021-21453-4))  
@@ -12,40 +12,56 @@ CellMarkerPip is a pipeline designed to include recent popular tools of identify
 (5) COMET ([Paper](https://doi.org/10.15252/msb.20199005))  
 (6) COSG ([Paper](https://doi.org/10.1093/bib/bbab579))  
 
-### Installation
-This pipeline supports different gene-selection methods writen by different language (python & R). You candownload the package from github, 
+## 2. Installation
+This pipeline supports different gene-selection methods writen by different language (python & R). Install the running environment for each of the above tools are critical.
+##### Step 1: Download cellMarkerPipe
+Please download the package directly from github (git clone). (or You may download our entire package as a zip file)
 ```shell
 git clone https://github.com/yao-laboratory/cellMarkerPipe.git
 ```
-After you get the package, you can directly go to the folder of cellMarkerPipe/environment to use the `Method.sh` file to install the method you want to use. For example, if you want to use the FindAllMarkers method embeded in the seurat, you should use `seurat.sh` to set the envrionment and install all nessesary dependencies
+##### Step 2: One-stop environment installation using bash (.sh) file
+Go to the folder of cellMarkerPipe
+Run bash file in environment/*.sh to install the method environment that you want to use.
+For example, if you want to use the "FindAllMarkers method" or any marker gene selection algorithms provided by Seurat, you should use `seurat.sh` to set the envrionment. It will install all nessesary dependencies in the bash file.
 
 ```shell
 bash environment/seurat.sh
 ```
+##### (Alternative) Step 2: Step-by-step environment installation
+This will be useful if running above bash file is difficult to accomplish in your system, or you need more freedom in specify environment name, or you need some flexibility.
+Step-by-step installation can be easily followed up and done by looking into the steps inside environment/*.sh file
 
-In the `seurat.sh` file, firstly anaconda is used to set up envrionment, then the package are installed with pip. These steps have been included into installing files under folder `envrionment`. Some methods have dependence conflict. You have to use the right one to set up environment. For example, if you want to use seurat method, then you should run command and activate environment.
+We use Seurat method as an example.
+
+(1)
+After you make sure anaconda is available, you should run command to install environment from yaml file and activate environment.
 ``` shell
 cp environment/seurat.yaml ./
 conda env create -f seurat.yaml
 ```
-Then you should have a customized conda envrionment named seurat_env with cellMarkerPipe installed. To use cellMarkerPipe, you firstly need to activate this envrionment.
+Then you should have a customized conda envrionment named seurat_env with cellMarkerPipe installed. To use cellMarkerPipe, you need to activate this envrionment.
 ``` shell
 conda activate seurat_env
 ```
-If user experiences hard time in conda installation, mamba is a good subsitution.
+If you experience hard time in conda installation, mamba is a good subsitution.
 ``` shell
 conda create -n my_env
 conda activate my_env
 conda install -c conda-forge mamba # if you haven't got mamba in your system
 mamba env update -n my_env --file seurat.yaml
 ```
-As for what packages are required excpet the ones listed in .yaml file, please check the .sh files corresponding to each method under the envrionment folder.
+(2)
+You may need to install additional packages for some method.
 
-Under the envrionment seurat_env, you can use pip to install this package under the folder cellMarkerPipe.
+As for what additional packages are required excpet the ones listed in .yaml file, please check the .sh files corresponding to each method under the envrionment folder.
+
+(3)
+After you successfully install the method envrionment seurat_env, you can use pip to register this package 'cellMarkerPipe' to your own python path so that you can run commands in any location.
 ``` shell
 pip install -e .
 ```
-The enviroment and software should be created and installed after this step. And you can check whether the installation is successful by running cellMarkerPipe in command line at any directory. 
+##### Step 3: Simple test for the installation
+The enviroment and packages should be created and installed from above steps. And you can check whether the installation is successful by running cellMarkerPipe in command line from any directory. 
 ``` shell
 cellMarkerPipe --version
 ```
@@ -54,14 +70,26 @@ If the package is successfully installed, the screen will show you the version o
 0.0.0
 ```
 
-### Tutorial
-#### Input
-The neccessary input file is the counts matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. You can choose to provide group information of the cells or not. If you want to use your own cell group, then it needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by `","` the first one is the cell barcodes same with `barcodes.tsv` and the second one is the cell name. An example dataset is provided in the folder `data/Zeisel/10x/` with the package.
+## 3. Tutorial
+#### Input data
+(required inputs)
+`DATADIR` is a user defined data directory.
+
+The neccessary input data is the cell matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. These files can be prepared by 10x pipeline. If you have other data types such as Seurat data object, currently we provide examples to convert from Seurat data object to 10x format.
+
+(optional inputs)
+You can choose to provide clustering(group) information of the cells if you have already clustered the cells using other tools or pipelines. This file needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by `","` the first column is the cell barcodes (same in `barcodes.tsv` ) and the second column is the cell cluster ID. 
+
+If you have known marker genes for cell clusters, you may provide this file named as `Known_marker.csv` inside the data directory `DATADIR`
+
+An example dataset is provided in the folder `data/Zeisel/10x/` inside this package.
 
 Then you can run the pipeline as example below:
 
-#### Using cellMarkerPipe in command-line mode
-##### Step 0: cellMarkerPipe Overview
+#### Key output data
+
+#### Run cellMarkerPipe in command-line mode
+##### Step 0: cellMarkerPipe Commands Overview
 This pipepline has 3 main steps: preprocess, selection and evaluation. 
 
 ``` bash
@@ -85,6 +113,7 @@ optional arguments:
   --version             show program's version number and exit
 ```
 ##### Step 1: Preperation
+This step is to use single cell RNA seq data to do preparations for marker gene selection, such as pre-processing and filtering by RNA quality, mitochondra genes, dimension reduction, and cell clustering etc.
 For the first step `preperation`, you can check how to set up the parameters by run:
 
 ``` shell
@@ -117,23 +146,28 @@ optional arguments:
                         The solution value used in FindClusters for re-cluster
   -alg ALGORITHM, --algorithm ALGORITHM
                         The algorithm chosen in FindClusters for re-cluster
-  --cluster             Do cluster
-  --no-cluster          Do not do cluster
+  --cluster             Do clustering
+  --no-cluster          Do not do clustering, you already have cluster information
   --know-marker         Have a file named Known_marker.csv
   --no-know-marker      Do not have a file named Known_marker.csv
-  --keep-known-marker   Keep the knwon markers during screening
+  --keep-known-marker   Keep the known markers during screening
   --no-keep-known-marker
                         Do not keep the known markers during screening
 ```
-Among these parameters, `WORKDIR` and `DATADIR` are two parameters that are necessary to be provided with the path of your directories to save output and input 10x data, seperately. Here I use the `testsuit/test` folder under the package folder `cellMarkerPipe` as the `WORKDIR` to have a testrun. There is an simple Zeisel 10x dataset provided you under the folder `data/Zeisel/10x` kept in the package folder `cellMarkerPipe` for this testrun.
+Among these parameters, `-wd WORKDIR` (where you want to save outputs) and `-10xd DATADIR` (where you have inputs) are two parameters that are necessary to be provided. 
+
+In this tutorial, we use the `testsuit/test` folder under the package `cellMarkerPipe` as the `WORKDIR` to have a testrun. There is an simple Zeisel 10x dataset provided under the folder `data/Zeisel/10x` in the package as the `DATADIR`
+
 
 ``` bash
 cd testsuit/test
+#The relative path is used in this example. We also strongly suggest to provide absolute paths.
 cellMarkerPipe preprocess -wd ./ -10xd ../../data/Zeisel/10x
+#
 ```
-In the example above, the relative path is used for `WORKDIR` and `DATADIR`.  However, it is strongly suggested to provide parameters `WORKDIR`, `DATADIR` with an absolute path. 
 
-After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated under the `WORKDIR`. The file `stat_preprocess` includes the standard ouput of the program. While `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. 
+
+After this step is finished, a folder named `Data` and a file named `stat_preprocess` will be generated under the `WORKDIR`. The file `stat_preprocess` includes the standard ouput of the program, while `Data` folder include the subset of count matrix of high variable genes in 10X and csv format, which are required for next `Selection` step. 
 
 There are some optional parameters provided to users to customize the data screening and cluster process, where we followed the tutorial of Seurat (https://satijalab.org/seurat/articles/pbmc3k_tutorial) to conduct:
 1. coarsely filter cells that have unique feature counts over `MAXRNA` or less than `MINRNA`. We filter cells that have >`MAXMT` mitochondrial counts. A meta-ouput of distribution_of_features_counts.png provide you with a reference to choose appropriate values for your dataset.
@@ -143,11 +177,12 @@ There are some optional parameters provided to users to customize the data scree
 5. reduce dimenion with PCA techinique. `NPCA` principle components are used for following cluster
 6. apply a graph-based clustering approach. You can customize the parameters `RESOLUTION` and `ALGORITHM` of Seurat method FindClusters used.
 
-In above process, step 5&6 are not neccessary to do if you already annote cluster labels to each cell. Then you need to prepare the file `groups.csv` which contains 2 columns seperated by `","` the first one is the cell barcodes same with `barcodes.tsv` and the second one is the cell name. We use `--cluster` or `--no-cluster` to switch whether cellMarkerPipe finds clusters for you. By default, the program does not find clusters automatically.
+In above process, step 5&6 are not neccessary to do if you already provide cell clusters in the file `groups.csv` manually or by other clustering tools. Then make sure `--no-cluster` is set. Otherwise you can use `--cluster` to allow cellMarkerPipe run clustering for you. By default, cellMarkerPipe will do clustering automatically.
 
-In our paper, we want to compare the selected marker genes with well-known marker genes. So we also provide the users a choice whether keep all well-known marker genes in case they are not top high variable genes and filtered by the pipeline. To keep all well-known genes, you need to provide a file named as 'Known_marker.csv' under the `DATADIR` and list the well-known genes for each cluster in each row. The 1st column is the cluster label, which can be anything and will be neglected later. By default, the pipeline will not keep the well-known genes, you need to mannually adding parameter --know-marker and --keep-known-marker to keep them for the next Selection step.
+CellMarkerPipe can be used to compare the selected marker genes with well-known marker genes. So we also provide the users a choice whether keep all well-known marker genes in case they are not in high variable gene list. To keep all well-known genes, you need to provide a file named as 'Known_marker.csv' under the `DATADIR` and list the well-known genes for each cluster in each row. The 1st column is the cluster ID or label, and the second column is the known marker genes separated by comma. By default, the pipeline will not keep the well-known genes, you need to mannually adding parameters `--know-marker` and `--keep-known-marker` to keep them in high variable gene list and for evaluation step.
 
 ##### Step 2: Select Marker Genes
+This step is to select marker genes by different methodology. Different methods have been wrapped by python or R codes in cellMarkerPipe.
 To run `selection` step, you can check how to set up the parameter by run,
 
 ``` shell
@@ -177,10 +212,11 @@ For example, we using method `de` (FindAllMarkers in Seurat) in this example com
 ``` bash
 cellMarkerPipe selection -wd ./ -m de
 ```
-Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for you reference. A standard output file `stat_selection` is provided for you under `WORKDIR` to debug.
+Using the example data, this step takes about a few minutes depending on which method you use. After this step is finished, you may find a `marker` folder under your `WORKDIR`, which include the results of selection. `marker_gene_per_group.csv` includes the selected marker genes for each group, which is required if you want to do the `Evaluation` step. The other files are meta-data for your reference. For example `stat_selection` is provided for you under `WORKDIR` to debug.
 
 ##### Step 3: Evaluation
-We also provide users a unsurpervised method to evalute the selected markers by calculating indexs which evalute how these marker genes can seperate the cell, including ARI et. al. To understand the parameters, you can run
+This step is to evaluation the quality of the marker genes selected by above methods and provide metrics. 
+To understand the parameters, you can run
 ```
 cellMarkerPipe evaluation -h
 ```
@@ -199,16 +235,18 @@ optional arguments:
   -alg ALGORITHM, --algorithm ALGORITHM
                         The algorithm chosen in FindClusters for re-cluster
 ```
-Here you need to provide the code with  `WORKDIR`, which should keep the same as above steps. In the process of `evaluation`, the program will redo the cluster with only the selected marker genes from the `selection` step. As `preperation` step, you can customize the clustering by setting number of principle component used `nPCA`, `RESOLUTION` and `ALGORITHM` of FindClusters method in seurat. Then use the clustering result, the program can calculate the indexs like ARI et. al.
+Here you need to provide  `WORKDIR`, which should be the same as above steps. In the process of `evaluation`, the program will redo the cluster with only the selected marker genes from the `selection` step to check the quality of marker genes, which is called re-clustering. Same as `preperation` step, you can customize the clustering by setting up the nearest neighbor graph (see Seurat paper or document) by `nPCA`, `RESOLUTION` and `ALGORITHM` of FindClusters method in seurat. 
 
-You can use example command below.
+You can run example command below.
 ```bash
 cellMarkerPipe evaluation -wd ./ -np 10
 ```
 
-This evaluation needs to redo the cluster process using only the selected markers. So you can set up `nPCA` to optimize this cluster process.  Using the example data, this step takes about less than 10 seconds. After you finished this step, the calculated index can be find under folder `evaluation` with a filename `result.csv`. the program also create a `re-cluster` folder under the `WORKDIR` which is the output of the cluster process.
-#### Using cellMarkerPipe as a library
-For developers, we also provide you a method to use cellMarkerPipe as a library. The way how to use it is similar to the command line mode.
+The outputs can be found under folder `evaluation` with a filename `result.csv`. This step also create a `re-cluster` folder under the `WORKDIR` which is the output of the re-clustering process.
+The final evaluation report includes re-clustering scores such as the Adjusted Rand Index (ARI),Jaccard index, purity, normalized mutual information (NMI), Fowlkes-Mallows Index (FMI) and Marco-F1 and Micro-F1 scores. If the user provides known marker genes, additional score report will be provided for precision and recall values for each cell type and overall dataset comparing to known marker genes.
+
+#### (alternative) Run cellMarkerPipe as a library in your own python codes or in Jupyternotebook
+For developers, we also provide you a method to use cellMarkerPipe as a python library. 
 
 ##### Step 0: Import pipeline and define data_dir and work_dir
 ``` python
@@ -240,7 +278,17 @@ block.evaluation(work_dir, nPCA=10)
 `nPCA` is the same parameter as `NPCA` in command line
 The above steps have been included into the test file under folder 'notebook'. The test data are under folder 'data'.
 
-#### Integrate a new tool into the pipeline.
+## 4. Additional Topics
+
+#### 4.1 Inject known marker genes as ground truth for evaluation.
+
+If you have known marker genes for cell clusters, you may provide this file named as `Known_marker.csv` inside the data directory `DATADIR`. This is already explained in step 1. By default, the pipeline will not consider the well-known genes; you need to mannually adding parameters `--know-marker` and `--keep-known-marker` to consider them. 
+
+#### 4.2 Inject marker genes selected from other computational tools to evaluate.
+
+First you can run the entire pipeline with your cell matrix data by any of our provided method, without allowing our pipeline to do clustering for you in the preparation. In the second step, you will see a selected marker gene file `marker_gene_per_group.csv`. Simply modify this file to include marker genes from your computational tool, and then run the evaluation step.
+
+#### 4.3 Integrate a new tool completely into the pipeline (as a developer).
 Developers are welcome to integrate the gene selection codes writen in Python or R into this pipeline. To achieve that, 
 
 Here are the procedures to help you achieve that.
