@@ -282,15 +282,21 @@ The above steps have been included into the test file under folder 'notebook'. T
 
 ## 4. Additional Topics
 
-#### 4.1 Inject known marker genes as ground truth for evaluation.
+#### 4.1 Support for Seurat Object as input.
+
+Officially, we only support 10x sparse matrix format in the pipeline. In order to use your seurat object in this pipeline, we suggest you to convert it to the 10x format.
+We have provided an example data (R object) in the folder `data/Zeisel/seurat/seurat.rds`
+Please follow the jupyternotebook to do the conversion. `testsuit/tutorial/ex2_start_from_seurat.ipynb`
+
+#### 4.2 Inject known marker genes as ground truth for evaluation.
 
 If you have known marker genes for cell clusters, you may provide this file named as `Known_marker.csv` inside the data directory `DATADIR`. This is already explained in step 1. By default, the pipeline will not consider the well-known genes; you need to mannually adding parameters `--know-marker` and `--keep-known-marker` to consider them. 
 
-#### 4.2 Inject marker genes selected from other computational tools to evaluate.
+#### 4.3 Inject marker genes selected from other computational tools to evaluate.
 
 First you can run the entire pipeline with your cell matrix data by any of our provided method, without allowing our pipeline to do clustering for you in the preparation. In the second step, you will see a selected marker gene file `marker_gene_per_group.csv`. Simply modify this file to include marker genes from your computational tool, and then run the evaluation step.
 
-#### 4.3 Integrate a new tool completely into the pipeline (as a developer).
+#### 4.4 Integrate a new tool completely into the pipeline (as a developer).
 Developers are welcome to integrate the gene selection codes writen in Python or R into this pipeline. To achieve that, 
 
 Here are the procedures to help you achieve that.
