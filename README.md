@@ -75,7 +75,9 @@ If the package is successfully installed, the screen will show you the version o
 (required inputs)
 `DATADIR` is a user defined data directory.
 
-The neccessary input data is the cell matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. These files can be prepared by 10x pipeline. If you have other data types such as Seurat data object, currently we provide examples to convert from Seurat data object to 10x format.
+The neccessary input data is the cell matrix data in 10x format (`matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`) under `DATADIR`. These files can be prepared by 10x pipeline. 
+
+If you have other data types such as Seurat data object, currently we provide a jupyternotebook example to convert from Seurat data object to 10x format. (please see testsuit/tutorial/ex2_start_from_seurat.ipynb)
 
 (optional inputs)
 You can choose to provide clustering(group) information of the cells if you have already clustered the cells using other tools or pipelines. This file needs to be provided in file named `groups.csv` under `DATADIR`. The `groups.csv` needs to contain 2 columns seperated by `","` the first column is the cell barcodes (same in `barcodes.tsv` ) and the second column is the cell cluster ID. 
