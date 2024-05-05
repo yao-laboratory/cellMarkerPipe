@@ -89,6 +89,10 @@ An example dataset is provided in the folder `data/Zeisel/10x/` inside this pack
 Then you can run the pipeline as example below:
 
 #### Key output data
+The main result of this pipepline is:
+(1) `marker_gene_per_group.csv` in marker folder includes marker genes for each group.
+（2） `result.csv` in evaluation folder includes evaluation index of ari,jaccard,purity,nmi,fmi,f1_macro,f1_micro after the recluster is proceeded.
+（3） `precision_recall.csv` in evaluation folder includes selected marker genes per group which are also shown in `Known_marker.csv` as listed in the first row with rowname "found_markers". The second row and the third row are precision and recall for each group. The last two rows include the total precision and recall.
 
 #### Run cellMarkerPipe in command-line mode
 ##### Step 0: cellMarkerPipe Commands Overview
