@@ -228,7 +228,9 @@ cellMarkerPipe evaluation -h
 ```
 Then you find all explanations of the parameters by output:
 ```
-usage: cellMarkerPipe evaluation [-h] -wd WORKDIR [-np NPCA] [-res RESOLUTION] [-alg ALGORITHM]
+usage: cellMarkerPipe evaluation [-h] -wd WORKDIR [-np NPCA] [-res RESOLUTION]
+                                 [-alg ALGORITHM] [--know-marker]
+                                 [-10xd DATADIR]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -240,6 +242,9 @@ optional arguments:
                         The solution value used in FindClusters for re-cluster
   -alg ALGORITHM, --algorithm ALGORITHM
                         The algorithm chosen in FindClusters for re-cluster
+  --know-marker         Have a file named Known_marker.csv
+  -10xd DATADIR, --10xdir DATADIR
+                        10x data directory
 ```
 Here you need to provide  `WORKDIR`, which should be the same as above steps. In the process of `evaluation`, the program will redo the cluster with only the selected marker genes from the `selection` step to check the quality of marker genes, which is called re-clustering. Same as `preperation` step, you can customize the clustering by setting up the nearest neighbor graph (see Seurat paper or document) by `nPCA`, `RESOLUTION` and `ALGORITHM` of FindClusters method in seurat. 
 
@@ -249,7 +254,7 @@ cellMarkerPipe evaluation -wd ./ -np 10
 ```
 
 The outputs can be found under folder `evaluation` with a filename `result.csv`. This step also create a `re-cluster` folder under the `WORKDIR` which is the output of the re-clustering process.
-The final evaluation report includes re-clustering scores such as the Adjusted Rand Index (ARI),Jaccard index, purity, normalized mutual information (NMI), Fowlkes-Mallows Index (FMI) and Marco-F1 and Micro-F1 scores. If the user provides known marker genes, additional score report will be provided for precision and recall values for each cell type and overall dataset comparing to known marker genes.
+The final evaluation report includes re-clustering scores such as the Adjusted Rand Index (ARI),Jaccard index, purity, normalized mutual information (NMI), Fowlkes-Mallows Index (FMI) and Marco-F1 and Micro-F1 scores. If the user provides known marker genes, additional score report will be provided for precision and recall values for each cell type and overall dataset comparing to known marker genes (`precision_recall.csv`). To switch on the calcuation of precision and recall, you need to use parameter --know-marker to switch on the calculation and provide the progam the directory where you store the known marker genes ``Known_marker.csv`` after the parameter -10xd. The `Known_marker.csv` is the same file as we discussed in section `Preparation`.
 
 #### (alternative) Run cellMarkerPipe as a library in your own python codes or in Jupyternotebook
 For developers, we also provide you a method to use cellMarkerPipe as a python library. 
