@@ -462,6 +462,11 @@ def YOUR_METHOD(work_dir, n_marker=10):
 ```
 
 
+## Citation
+
+If you use this work, please cite:
+
+```bibtex
 @article{jia2024cellmarkerpipe,
   title={CellMarkerPipe: cell marker identification and evaluation pipeline in single cell transcriptomes},
   author={Jia, Y., Ma, P. and Yao, Q.},
