@@ -460,3 +460,16 @@ def YOUR_METHOD(work_dir, n_marker=10):
     os.system(command)
     return 
 ```
+
+
+@article{jia2024cellmarkerpipe,
+  title={CellMarkerPipe: cell marker identification and evaluation pipeline in single cell transcriptomes},
+  author={Jia, Y., Ma, P. and Yao, Q.},
+  journal={Scientific Reports},
+  volume={14},
+  pages={13151},
+  year={2024},
+  publisher={Nature Publishing Group},
+  doi={10.1038/s41598-024-63492-z},
+  url={https://doi.org/10.1038/s41598-024-63492-z}
+}
