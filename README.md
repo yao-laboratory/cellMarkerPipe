@@ -1,5 +1,5 @@
 # cellMarkerPipe
-[![DOI:10.1038/s41598-024-63492-z](https://zenodo.org/badge/DOI/10.1038/s41598-024-63492-z.svg)](https://10.1038/s41598-024-63492-z)
+[![DOI:10.1038/s41598-024-63492-z](https://zenodo.org/badge/DOI/10.1038/s41598-024-63492-z.svg)](https://doi.org/10.1038/s41598-024-63492-z)
 [![GitHub stars](https://img.shields.io/github/stars/yao-laboratory/cellMarkerPipe.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/yao-laboratory/cellMarkerPipe/stargazers/)
 
 <img src="./cellMarkerPipe.png" width="200" height="250"/>
