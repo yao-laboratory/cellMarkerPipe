@@ -1,7 +1,7 @@
 # cellMarkerPipe
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg)](http://creativecommons.org/licenses/by/4.0/)
 [![DOI:10.1038/s41598-024-63492-z](https://zenodo.org/badge/DOI/10.1038/s41598-024-63492-z.svg)](https://doi.org/10.1038/s41598-024-63492-z)
-[![GitHub stars](https://img.shields.io/github/stars/yao-laboratory/cellMarkerPipe.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/yao-laboratory/cellMarkerPipe/stargazers/)
+[![GitHub stars](https://img.shields.io/github/stars/yao-laboratory/cellMarkerPipe.svg?style=social&label=Star&maxAge=3600)](https://GitHub.com/yao-laboratory/cellMarkerPipe/stargazers/)
 ![Maintenance Status](https://img.shields.io/badge/Maintained-yes-green)
 
 <img src="./cellMarkerPipe.png" width="200" height="250"/>
